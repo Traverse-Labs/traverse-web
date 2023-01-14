@@ -1,0 +1,31 @@
+{
+  "name": "turborepo-basic-shared",
+  "version": "0.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "lint": "turbo run lint",
+    "lint:fix": "prettier --write \"**/*.{ts,tsx,md}\" && turbo run lint:fix",
+    "prepare": "husky install",
+    "depcheck": "turbo run depcheck"
+  },
+  "devDependencies": {
+    "depcheck": "^1.4.3",
+    "husky": "^8.0.0",
+    "prettier": "^2.8.1",
+    "prettier-plugin-tailwindcss": "^0.2.1",
+    "turbo": "^1.6.3",
+    "autoprefixer": "^10.4.13",
+    "postcss": "^8.4.21",
+    "@babel/core": "^7.20.12"
+  },
+  "engines": {
+    "node": ">=16.16.0",
+    "npm": ">=8.11.0"
+  }
+}
