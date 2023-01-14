@@ -1,4 +1,5 @@
 import "../styles/global.css";
+import "../styles/normalize.css";
 import "react-reflex/styles.css";
 
 import {
