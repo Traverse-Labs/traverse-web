@@ -1,29 +1,120 @@
+import { Listbox, Transition } from "@headlessui/react";
+import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import { clsx } from "clsx";
+import { Fragment, useState } from "react";
+
+const sizeOptions = {
+  sm: "py-1 px-2",
+  md: "py-2 px-3",
+};
+
+const dropdownAlignOptions = {
+  left: "left-0",
+  right: "right-0",
+};
 
 type Props = {
-  className?: string;
   options: string[];
   defaultOption: string;
+  isFullWidth?: boolean;
+  isChevronIconShown?: boolean;
+  size?: keyof typeof sizeOptions;
+  dropdownAlign?: keyof typeof dropdownAlignOptions;
 };
-const DropdownSelect = (props: Props) => {
-  const { className, options, defaultOption } = props;
+
+export default function DropdownSelect(props: Props) {
+  const {
+    options,
+    defaultOption,
+    isFullWidth,
+    isChevronIconShown,
+    size = "md",
+    dropdownAlign = "left",
+  } = props;
+
+  const [selected, setSelected] = useState(defaultOption);
 
   return (
-    <div>
-      <select
-        className={clsx(
-          "block w-full rounded-md border-slate-700 py-1.5 focus:border-teal-500" +
-            " cursor-pointer bg-slate-800 text-xs text-slate-100 focus:outline-none focus:ring-teal-500 sm:text-sm",
-          className
-        )}
-        defaultValue={defaultOption}
-      >
-        {options.map((option, i) => (
-          <option key={`${option}-${i}`}>{option}</option>
-        ))}
-      </select>
-    </div>
-  );
-};
+    <Listbox value={selected} onChange={setSelected}>
+      {({ open }) => (
+        <>
+          <div className="relative mt-1">
+            <Listbox.Button
+              className={clsx(
+                "relative max-w-full cursor-pointer text-ellipsis rounded-md border border-slate-600 bg-slate-800 text-left text-slate-50 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 sm:text-sm",
+                isFullWidth && "w-full",
+                isChevronIconShown && "pr-10",
+                sizeOptions[size]
+              )}
+            >
+              <span className="block truncate">{selected}</span>
+              {isChevronIconShown && (
+                <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                  <ChevronUpDownIcon
+                    className="h-5 w-5 text-slate-50"
+                    aria-hidden="true"
+                  />
+                </span>
+              )}
+            </Listbox.Button>
 
-export default DropdownSelect;
+            <Transition
+              show={open}
+              as={Fragment}
+              enter="transition-opacity duration-75"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="transition-opacity duration-150"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <Listbox.Options
+                className={clsx(
+                  "absolute z-10 mt-1 max-h-60 max-w-full overflow-auto rounded-md border border-slate-600 bg-slate-800 py-1 text-slate-50 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm",
+                  isFullWidth && "w-full",
+                  dropdownAlignOptions[dropdownAlign]
+                )}
+              >
+                {options.map((option) => (
+                  <Listbox.Option
+                    key={option}
+                    className={({ active }) =>
+                      clsx(
+                        "transition-50 transition",
+                        active ? "bg-teal-600 text-white" : "text-slate-50",
+                        "relative flex cursor-pointer select-none items-center justify-between gap-3 text-ellipsis py-2 px-3"
+                      )
+                    }
+                    value={option}
+                  >
+                    {({ selected, active }) => (
+                      <>
+                        <span
+                          className={clsx(
+                            selected ? "font-semibold" : "font-normal",
+                            "block truncate"
+                          )}
+                        >
+                          {option}
+                        </span>
+                        <span
+                          className={clsx(
+                            "transition-0 transition",
+                            active ? "text-white" : "text-teal-500",
+                            selected ? "opacity-100" : "opacity-0"
+                          )}
+                        >
+                          <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                        </span>
+                      </>
+                    )}
+                  </Listbox.Option>
+                ))}
+              </Listbox.Options>
+            </Transition>
+          </div>
+        </>
+      )}
+    </Listbox>
+  );
+}
