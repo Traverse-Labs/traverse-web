@@ -11,6 +11,12 @@ export default {
     isFullWidth: { control: "boolean" },
     isChevronIconShown: { control: "boolean" },
     dropdownAlign: { control: { type: "radio" }, options: ["left", "right"] },
+    placeholder: { control: "text" },
+    isRemovable: { control: "text" },
+    onRemove: { action: "clicked" },
+    onChange: { action: "clicked" },
+    isResetOnRemove: { control: "boolean" },
+    isResetOnChange: { control: "boolean" },
   },
 };
 
@@ -18,32 +24,51 @@ const Template: ComponentStory<typeof DropdownSelect> = (args) => (
   <DropdownSelect {...args} />
 );
 
-export const Default = Template.bind({});
-Default.args = {
+export const Base = Template.bind({});
+Base.args = {
   options: [
     "The First 1",
     "Second 2",
     "A Third Option 3",
     "Some Very Very Very Very Very Very Long Option 4",
   ],
+};
+
+export const WithCustomPlaceholder = Template.bind({});
+WithCustomPlaceholder.args = {
+  ...Base.args,
+  placeholder: "+ Add event...",
+};
+
+export const WithDefaultOption = Template.bind({});
+WithDefaultOption.args = {
+  ...Base.args,
   defaultOption: "A Third Option 3",
+};
+
+export const WithRemoveIcon = Template.bind({});
+WithRemoveIcon.args = {
+  ...Base.args,
+  defaultOption: "A Third Option 3",
+  isRemovable: true,
+  isResetOnRemove: true,
 };
 
 export const FullWidth = Template.bind({});
 FullWidth.args = {
-  ...Default.args,
+  ...Base.args,
   isFullWidth: true,
 };
 
 export const WithChevron = Template.bind({});
 WithChevron.args = {
-  ...Default.args,
+  ...Base.args,
   isChevronIconShown: true,
 };
 
 export const AlignRight: ComponentStory<typeof DropdownSelect> = (args) => (
   <div className="flex w-full justify-end">
-    <DropdownSelect {...args} {...Default.args} dropdownAlign="right" />
+    <DropdownSelect {...args} {...Base.args} dropdownAlign="right" />
   </div>
 );
 

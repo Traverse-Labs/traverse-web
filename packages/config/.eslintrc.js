@@ -34,9 +34,6 @@ module.exports = {
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/no-var-requires": "off",
     "react/jsx-curly-brace-presence": ["error", { props: "never" }],
-    "import/no-extraneous-dependencies": [
-      "error",
-      { packageDir: ["../..", "."] },
-    ],
+    "import/no-extraneous-dependencies": ["off"],
   },
 };

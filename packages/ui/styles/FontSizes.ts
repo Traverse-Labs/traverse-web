@@ -1,0 +1,15 @@
+export default {
+  size40: "40px",
+  size36: "36px",
+  size32: "32px",
+  size28: "28px",
+  size24: "24px",
+  size20: "20px",
+  size16: "16px",
+  size14: "14px",
+  size13: "13px",
+  size12: "12px",
+  size11: "11px",
+  size10: "10px",
+  size9: "9px",
+};

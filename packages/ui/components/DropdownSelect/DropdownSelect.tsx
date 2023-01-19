@@ -1,7 +1,11 @@
 import { Listbox, Transition } from "@headlessui/react";
-import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
+import {
+  CheckIcon,
+  ChevronUpDownIcon,
+  XMarkIcon,
+} from "@heroicons/react/20/solid";
 import { clsx } from "clsx";
-import { Fragment, useState } from "react";
+import { Fragment, MouseEventHandler, useState } from "react";
 
 const sizeOptions = {
   sm: "py-1 px-2",
@@ -15,27 +19,51 @@ const dropdownAlignOptions = {
 
 type Props = {
   options: string[];
-  defaultOption: string;
+  defaultOption?: string;
+  placeholder?: string;
   isFullWidth?: boolean;
   isChevronIconShown?: boolean;
   size?: keyof typeof sizeOptions;
   dropdownAlign?: keyof typeof dropdownAlignOptions;
+  isRemovable?: boolean;
+  onRemove?: (option: string) => void;
+  onChange?: (prevOption: string, newOption: string) => void;
+  isResetOnChange?: boolean;
+  isResetOnRemove?: boolean;
 };
 
 export default function DropdownSelect(props: Props) {
   const {
     options,
-    defaultOption,
+    defaultOption = null,
+    placeholder = "Select Option...",
     isFullWidth,
     isChevronIconShown,
     size = "md",
     dropdownAlign = "left",
+    onRemove,
+    isRemovable,
+    onChange,
+    isResetOnChange,
+    isResetOnRemove,
   } = props;
 
   const [selected, setSelected] = useState(defaultOption);
 
+  const handleRemove: MouseEventHandler = (e) => {
+    e.preventDefault();
+    onRemove && onRemove(selected);
+    isResetOnRemove && setSelected(null);
+  };
+
+  const handleChange = (option: string) => {
+    onChange && onChange(selected, option);
+    setSelected(option);
+    isResetOnChange && setSelected(null);
+  };
+
   return (
-    <Listbox value={selected} onChange={setSelected}>
+    <Listbox value={selected} onChange={handleChange}>
       {({ open }) => (
         <>
           <div className="relative mt-1">
@@ -47,7 +75,19 @@ export default function DropdownSelect(props: Props) {
                 sizeOptions[size]
               )}
             >
-              <span className="block truncate">{selected}</span>
+              <div className="flex items-center gap-1">
+                <span className="block truncate">
+                  {selected || (
+                    <span className="text-slate-400">{placeholder}</span>
+                  )}
+                </span>
+                {isRemovable && selected && (
+                  <XMarkIcon
+                    className="isolate h-5 w-5 rounded-full text-teal-500 transition hover:bg-teal-700 hover:text-teal-100"
+                    onClick={handleRemove}
+                  />
+                )}
+              </div>
               {isChevronIconShown && (
                 <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                   <ChevronUpDownIcon
@@ -70,7 +110,7 @@ export default function DropdownSelect(props: Props) {
             >
               <Listbox.Options
                 className={clsx(
-                  "absolute z-10 mt-1 max-h-60 max-w-full overflow-auto rounded-md border border-slate-600 bg-slate-800 py-1 text-slate-50 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm",
+                  "absolute z-10 mt-1 max-h-60 overflow-auto rounded-md border border-slate-600 bg-slate-800 py-1 text-slate-50 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm",
                   isFullWidth && "w-full",
                   dropdownAlignOptions[dropdownAlign]
                 )}
