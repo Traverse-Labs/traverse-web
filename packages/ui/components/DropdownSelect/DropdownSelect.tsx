@@ -52,7 +52,7 @@ export default function DropdownSelect(props: Props) {
 
   const handleRemove: MouseEventHandler = (e) => {
     e.preventDefault();
-    onRemove && onRemove(selected);
+    onChange && onChange(selected, undefined);
     isResetOnRemove && setSelected(null);
   };
 
@@ -78,7 +78,7 @@ export default function DropdownSelect(props: Props) {
               <div className="flex items-center gap-1">
                 <span className="block truncate">
                   {selected || (
-                    <span className="text-slate-400">{placeholder}</span>
+                    <span className="italic text-slate-400">{placeholder}</span>
                   )}
                 </span>
                 {isRemovable && selected && (

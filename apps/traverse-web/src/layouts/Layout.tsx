@@ -11,7 +11,7 @@ import DexScanLogo from "../assets/pngs/logos/dex-scan-logo.png";
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: HomeIcon },
-  { name: "Charts", href: "/donate", icon: ChartBarIcon },
+  { name: "Charts", href: "/chart/new", icon: ChartBarIcon },
 ];
 
 type Props = {
@@ -164,7 +164,7 @@ const Layout = (props: Props) => {
   );
 
   return (
-    <div className="fixed-body">
+    <div className="fixed-body text-slate-50">
       {mobileSideBar}
       {desktopSideBar}
       <div className="flex h-full flex-1 flex-col md:pl-14">
@@ -174,7 +174,7 @@ const Layout = (props: Props) => {
           </div>
           {mobileSideBarToggle}
         </div>
-        <main className="flex-1 overflow-hidden">{children}</main>
+        <main className="flex-1 overflow-auto">{children}</main>
       </div>
     </div>
   );

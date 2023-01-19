@@ -25,7 +25,7 @@ if (typeof window !== "undefined") {
 type LineChartProps = {
   className?: string;
   data: SeriesChartData;
-  options: {
+  options?: {
     title?: string;
     categoryLabel?: string;
     seriesLabel?: string;

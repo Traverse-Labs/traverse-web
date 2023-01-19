@@ -29,7 +29,7 @@ const LogoImg = (props: Props & ImageProps) => {
         className
       )}
     >
-      <div className="relative h-full w-full overflow-hidden">
+      <div className="relative h-full w-full">
         <Image layout="fill" objectFit="contain" src={src} alt="" priority />
       </div>
     </div>

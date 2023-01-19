@@ -15,7 +15,6 @@ export default class MyDocument extends Document {
             rel="stylesheet"
           />
           {/* eslint-disable-next-line @next/next/no-sync-scripts */}
-          <script src="/static/datafeeds/udf/dist/bundle.js" />
         </Head>
         <body className="fixed-body">
           <Main />

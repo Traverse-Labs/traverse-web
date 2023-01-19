@@ -5,15 +5,27 @@ import { DropdownSelect } from "../DropdownSelect";
 
 type Props = {
   options: string[];
-  onChange: (selected: string[]) => void;
+  onChange?: (selected: string[]) => void;
+  placeholder?: string;
 };
 const MultiDropdownSelect = (props: Props) => {
-  const { options } = props;
+  const { options, onChange, placeholder } = props;
 
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
-  const handleChange = (prevOption: string, selectedOption: string) => {
-    const newOptions = [...selectedOptions];
+  const handleChange = (
+    prevOption: string,
+    selectedOption: string | undefined
+  ) => {
+    if (!selectedOption) {
+      const newOptions = without(prevOption, [...selectedOptions]);
+
+      setSelectedOptions(newOptions);
+      onChange && onChange(newOptions);
+      return;
+    }
+
+    let newOptions = [...selectedOptions];
     const prevOptionIdx = newOptions.indexOf(prevOption);
 
     if (prevOptionIdx !== -1) {
@@ -22,11 +34,10 @@ const MultiDropdownSelect = (props: Props) => {
       newOptions.push(selectedOption);
     }
 
-    setSelectedOptions(uniq(newOptions));
-  };
+    newOptions = uniq(newOptions);
 
-  const handleRemove = (removedOption: string) => {
-    setSelectedOptions((prev) => without(removedOption, prev));
+    setSelectedOptions(newOptions);
+    onChange && onChange(newOptions);
   };
 
   return (
@@ -37,13 +48,13 @@ const MultiDropdownSelect = (props: Props) => {
           options={options}
           defaultOption={opt}
           isRemovable
-          onRemove={handleRemove}
           onChange={handleChange}
         />
       ))}
       <DropdownSelect
         options={options}
         onChange={handleChange}
+        placeholder={placeholder}
         isResetOnChange
       />
     </div>
