@@ -1,3 +1,3 @@
 # Traverse Web
 
-Core web application for Traverse Labs application
+Core web for Traverse Labs application
