@@ -1,3 +1,4 @@
+export * from "./Button";
 export * from "./ButtonGroup";
 export * from "./Charts";
 export * from "./DataTable";
@@ -5,4 +6,6 @@ export * from "./DropdownSelect";
 export * from "./LoadingSpinner";
 export * from "./LogoImg";
 export * from "./MultiDropdownSelect";
+export * from "./TextInput";
+export * from "./Toggle";
 export * from "./Tooltip";

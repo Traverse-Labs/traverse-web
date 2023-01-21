@@ -9,7 +9,7 @@ import colors from "tailwindcss/colors";
 import { chartPaletteLight, FontSizes } from "../../../styles";
 import { ChartRef, SeriesChartData } from "../../../types";
 
-export type LineChartProps = {
+export type HorizontalBarChartProps = {
   className?: string;
   data: SeriesChartData;
   options?: {
@@ -18,6 +18,7 @@ export type LineChartProps = {
     seriesLabel?: string;
     formatY?: string;
     tooltipPointFormat?: string;
+    height?: number;
     isMarkerShown?: boolean;
     isLegendShown?: boolean;
     customOptions?: object;
@@ -33,14 +34,15 @@ const defaultOptions = {
   isSharedTooltip: true,
 };
 
-const LineChart = forwardRef<ChartRef, LineChartProps>(
-  (props: LineChartProps, ref) => {
+const HorizontalBarChart = forwardRef<ChartRef, HorizontalBarChartProps>(
+  (props: HorizontalBarChartProps, ref) => {
     const { className, data, options } = props;
 
     const {
       categoryLabel,
       seriesLabel,
       title,
+      height,
       formatY,
       isMarkerShown,
       isLegendShown,
@@ -52,16 +54,16 @@ const LineChart = forwardRef<ChartRef, LineChartProps>(
       return {
         name: s.name,
         data: s.values,
-        type: "line",
+        type: "bar",
         color: chartPaletteLight[i],
       };
     });
 
     const hcOptions = {
       chart: {
-        type: "line",
-        marginLeft: 50,
+        type: "bar",
         marginTop: !title ? 32 : undefined,
+        height,
         backgroundColor: colors.slate[800],
       },
       plotOptions: {
@@ -74,6 +76,7 @@ const LineChart = forwardRef<ChartRef, LineChartProps>(
           animation: {
             duration: 1000,
           },
+          borderColor: colors.slate[900],
         },
       },
       title: {
@@ -98,16 +101,8 @@ const LineChart = forwardRef<ChartRef, LineChartProps>(
         min: 0,
         title: {
           text: seriesLabel,
-          style: {
-            textAnchor: "start",
-          },
-          rotation: 0,
-          align: "high",
-          y: -20,
-          x: -30,
         },
         labels: {
-          reserveSpace: false,
           ...(formatY ? { format: formatY } : {}),
         },
         gridLineColor: colors.slate[700],
@@ -133,6 +128,6 @@ const LineChart = forwardRef<ChartRef, LineChartProps>(
   }
 );
 
-LineChart.displayName = "LineChart";
+HorizontalBarChart.displayName = "HorizontalBarChart";
 
-export default LineChart;
+export default HorizontalBarChart;

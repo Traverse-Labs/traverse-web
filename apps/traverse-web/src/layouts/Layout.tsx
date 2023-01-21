@@ -136,14 +136,17 @@ const Layout = (props: Props) => {
   );
 
   const mobileSideBarToggle = (
-    <button
-      type="button"
-      className="border border-slate-800 px-3 text-slate-500 focus:outline-none focus:ring-1 focus:ring-inset focus:ring-white md:hidden md:px-4"
-      onClick={() => setSidebarOpen(true)}
-    >
-      <span className="sr-only">Open sidebar</span>
-      <Bars3BottomLeftIcon className="h-5 md:w-5" aria-hidden="true" />
-    </button>
+    <div className="sticky top-0 z-10 flex flex h-11 flex-shrink-0 items-center gap-4 border-b border-slate-800 bg-slate-900 shadow md:hidden md:h-14">
+      <button
+        type="button"
+        className="h-full border border-slate-800 px-3 text-slate-500 focus:outline-none focus:ring-1 focus:ring-inset focus:ring-white md:px-4"
+        onClick={() => setSidebarOpen(true)}
+      >
+        <span className="sr-only">Open sidebar</span>
+        <Bars3BottomLeftIcon className="h-5 md:w-5" aria-hidden="true" />
+      </button>
+      <div className="text-slate-500">Traverse Analytics</div>
+    </div>
   );
 
   const desktopSideBar = (
@@ -159,22 +162,13 @@ const Layout = (props: Props) => {
     </div>
   );
 
-  const navBar = (
-    <div className="flex flex-1 cursor-text items-center justify-between text-slate-500" />
-  );
-
   return (
     <div className="fixed-body text-slate-50">
       {mobileSideBar}
       {desktopSideBar}
       <div className="flex h-full flex-1 flex-col md:pl-14">
-        <div className="sticky top-0 z-10 flex h-11 flex-shrink-0 bg-slate-900 shadow md:h-14">
-          <div className="flex flex-1 justify-between border-y border-slate-800 px-3 text-sm md:px-6">
-            {navBar}
-          </div>
-          {mobileSideBarToggle}
-        </div>
-        <main className="flex-1 overflow-auto">{children}</main>
+        {mobileSideBarToggle}
+        <main className="flex-1 overflow-auto py-8">{children}</main>
       </div>
     </div>
   );

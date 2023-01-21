@@ -1,11 +1,11 @@
 import { ComponentStory } from "@storybook/react";
-import { LineChart } from "ui";
+import { HorizontalBarChart } from "ui";
 
-import { mockCategories, mockValues } from "./MockData";
+import { mockValues } from "./MockData";
 
 export default {
-  title: "Charts/Line Chart",
-  component: LineChart,
+  title: "Charts/Horizontal Bar Chart",
+  component: HorizontalBarChart,
   argTypes: {
     data: { control: "object" },
     options: {
@@ -17,9 +17,9 @@ export default {
   },
 };
 
-const Template: ComponentStory<typeof LineChart> = (args) => (
+const Template: ComponentStory<typeof HorizontalBarChart> = (args) => (
   <div className="w-full rounded-md bg-slate-800 p-4">
-    <LineChart {...args} />
+    <HorizontalBarChart {...args} />
   </div>
 );
 
@@ -29,14 +29,17 @@ Default.args = {
     series: [
       {
         name: "Deposit",
-        values: mockValues(30),
+        values: mockValues(2),
       },
       {
         name: "Withdrawal",
-        values: mockValues(30),
+        values: mockValues(2),
       },
     ],
-    categories: mockCategories(30),
+    categories: [
+      "how are you today blah blah blah how are you today blah blah blah how are you today blah blah blah how are you today blah blah blah",
+      "how are you today blah blah blah",
+    ],
   },
   options: {
     seriesLabel: "Unique Wallets",

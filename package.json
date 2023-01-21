@@ -11,12 +11,10 @@
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
     "lint:fix": "prettier --write \"**/*.{ts,tsx,md}\" && turbo run lint:fix",
-    "prepare": "husky install",
     "depcheck": "turbo run depcheck"
   },
   "devDependencies": {
     "depcheck": "^1.4.3",
-    "husky": "^8.0.0",
     "prettier": "^2.8.1",
     "prettier-plugin-tailwindcss": "^0.2.1",
     "turbo": "^1.6.3",

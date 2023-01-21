@@ -5,7 +5,7 @@ import {
   XMarkIcon,
 } from "@heroicons/react/20/solid";
 import { clsx } from "clsx";
-import { Fragment, MouseEventHandler, useState } from "react";
+import { Fragment, MouseEventHandler, useEffect, useState } from "react";
 
 const sizeOptions = {
   sm: "py-1 px-2",
@@ -26,10 +26,10 @@ type Props = {
   size?: keyof typeof sizeOptions;
   dropdownAlign?: keyof typeof dropdownAlignOptions;
   isRemovable?: boolean;
-  onRemove?: (option: string) => void;
   onChange?: (prevOption: string, newOption: string) => void;
   isResetOnChange?: boolean;
   isResetOnRemove?: boolean;
+  value?: string;
 };
 
 export default function DropdownSelect(props: Props) {
@@ -41,14 +41,20 @@ export default function DropdownSelect(props: Props) {
     isChevronIconShown,
     size = "md",
     dropdownAlign = "left",
-    onRemove,
     isRemovable,
     onChange,
     isResetOnChange,
     isResetOnRemove,
+    value,
   } = props;
 
   const [selected, setSelected] = useState(defaultOption);
+
+  useEffect(() => {
+    if (value) {
+      setSelected(value);
+    }
+  }, [value]);
 
   const handleRemove: MouseEventHandler = (e) => {
     e.preventDefault();

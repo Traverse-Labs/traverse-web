@@ -16,14 +16,14 @@ const Template: ComponentStory<typeof ButtonGroup> = (args) => (
   <ButtonGroup {...args} />
 );
 
-export const Default = Template.bind({});
-Default.args = {
+export const Base = Template.bind({});
+Base.args = {
   labels: ["Unique Users", "Transactions", "Txn Volume"],
 };
 
 export const PersistentState = Template.bind({});
 PersistentState.args = {
-  ...Default.args,
+  ...Base.args,
   isPersistentState: true,
 };
 

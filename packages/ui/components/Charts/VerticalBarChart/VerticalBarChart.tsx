@@ -9,7 +9,7 @@ import colors from "tailwindcss/colors";
 import { chartPaletteLight, FontSizes } from "../../../styles";
 import { ChartRef, SeriesChartData } from "../../../types";
 
-export type LineChartProps = {
+export type VerticalBarChartProps = {
   className?: string;
   data: SeriesChartData;
   options?: {
@@ -18,6 +18,7 @@ export type LineChartProps = {
     seriesLabel?: string;
     formatY?: string;
     tooltipPointFormat?: string;
+    height?: number;
     isMarkerShown?: boolean;
     isLegendShown?: boolean;
     customOptions?: object;
@@ -33,14 +34,15 @@ const defaultOptions = {
   isSharedTooltip: true,
 };
 
-const LineChart = forwardRef<ChartRef, LineChartProps>(
-  (props: LineChartProps, ref) => {
+const VerticalBarChart = forwardRef<ChartRef, VerticalBarChartProps>(
+  (props: VerticalBarChartProps, ref) => {
     const { className, data, options } = props;
 
     const {
       categoryLabel,
       seriesLabel,
       title,
+      height,
       formatY,
       isMarkerShown,
       isLegendShown,
@@ -52,16 +54,17 @@ const LineChart = forwardRef<ChartRef, LineChartProps>(
       return {
         name: s.name,
         data: s.values,
-        type: "line",
+        type: "column",
         color: chartPaletteLight[i],
       };
     });
 
     const hcOptions = {
       chart: {
-        type: "line",
-        marginLeft: 50,
+        type: "column",
         marginTop: !title ? 32 : undefined,
+        height,
+        marginLeft: 50,
         backgroundColor: colors.slate[800],
       },
       plotOptions: {
@@ -74,6 +77,7 @@ const LineChart = forwardRef<ChartRef, LineChartProps>(
           animation: {
             duration: 1000,
           },
+          borderColor: colors.slate[900],
         },
       },
       title: {
@@ -133,6 +137,6 @@ const LineChart = forwardRef<ChartRef, LineChartProps>(
   }
 );
 
-LineChart.displayName = "LineChart";
+VerticalBarChart.displayName = "VerticalBarChart";
 
-export default LineChart;
+export default VerticalBarChart;
