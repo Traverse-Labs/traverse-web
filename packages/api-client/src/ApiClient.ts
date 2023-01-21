@@ -1,7 +1,12 @@
 import { CommonAmplitudeEvent, trackCommonEvent } from "analytics";
 import axios, { AxiosError } from "axios";
 
-const ApiClient = axios.create({ baseURL: process.env.NEXT_PUBLIC_API_URL });
+const ApiClient = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  headers: {
+    "x-user-id": "2",
+  },
+});
 
 ApiClient.interceptors.request.use((config) => {
   if (config.headers) {

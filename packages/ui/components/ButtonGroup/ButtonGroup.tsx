@@ -1,61 +1,75 @@
-import { clsx } from "clsx";
-import { useState } from "react";
+import { cva } from "class-variance-authority";
 
-type Props = {
-  labels: string[];
-  onClick: (label: string, index: number) => void;
+import { Option } from "../../types/Option.type";
+
+const buttonStyle = cva(
+  "relative inline-flex items-center border border-slate-700 px-4 py-2 text-sm font-medium text-slate-50 transition  hover:text-slate-50 whitespace-nowrap -ml-px",
+  {
+    variants: {
+      variant: {
+        active: "bg-teal-600 hover:bg-teal-700",
+        inactive: "bg-slate-800 hover:bg-slate-700",
+      },
+      position: {
+        start: "rounded-l-md",
+        middle: "",
+        end: "rounded-r-md",
+      },
+    },
+    defaultVariants: {
+      variant: "inactive",
+      position: "middle",
+    },
+  }
+);
+
+type Props<T> = {
+  value: T;
+  options: Option<T>[];
+  onClick: (selectedOption: Option<T>) => void;
   isPersistentState?: boolean;
-  defaultSelection?: number;
 };
 
-const ButtonGroup = (props: Props) => {
-  const {
-    labels,
-    onClick,
-    isPersistentState = false,
-    defaultSelection = 0,
-  } = props;
+const ButtonGroup = <T,>(props: Props<T>) => {
+  const { value, options, onClick, isPersistentState = false } = props;
 
-  if (labels.length < 2) {
+  if (options.length < 2) {
     throw new Error(
-      "'labels' prop needs at least 2 items for Button Group. Else use a single Button instead"
+      "'options' prop needs at least 2 items for Button Group. Else use a single Button instead"
     );
   }
 
-  const [activeIndex, setActiveIndex] = useState(defaultSelection);
-
-  const defaultStyle =
-    "relative inline-flex items-center border border-slate-700 bg-slate-800 px-4 py-2 text-sm font-medium text-slate-50 transition hover:bg-slate-700 hover:text-slate-50 whitespace-nowrap";
-
-  const handleButtonClick = (label: string, idx: number) => {
-    setActiveIndex(idx);
-    onClick(label, idx);
+  const handleButtonClick = (option: Option<T>) => {
+    onClick(option);
   };
 
-  const getActiveStyle = (idx: number) => {
-    if (isPersistentState && idx === activeIndex) {
-      return "bg-teal-600 text-slate-50 hover:bg-teal-600 hover: text-slate-50";
+  const getVariant = (option: Option<T>) => {
+    if (isPersistentState && option.value === value) {
+      return "active";
     }
 
-    return null;
+    return "inactive";
   };
 
   const getMiddleButtons = () => {
     const middleButtons = [];
 
-    if (labels.length < 3) {
+    if (options.length < 3) {
       return null;
     }
 
-    for (let i = 1; i < labels.length - 1; i++) {
+    for (let i = 1; i < options.length - 1; i++) {
       middleButtons.push(
         <button
-          key={`button-group-${labels[i]}`}
+          key={`button-group-${options[i].label}`}
           type="button"
-          className={clsx(getActiveStyle(i), defaultStyle, "-ml-px")}
-          onClick={() => handleButtonClick(labels[i], i)}
+          className={buttonStyle({
+            variant: getVariant(options[i]),
+            position: "middle",
+          })}
+          onClick={() => handleButtonClick(options[i])}
         >
-          {labels[i]}
+          {options[i].label}
         </button>
       );
     }
@@ -67,24 +81,24 @@ const ButtonGroup = (props: Props) => {
     <div className="isolate inline-flex rounded-md shadow-sm">
       <button
         type="button"
-        className={clsx(getActiveStyle(0), defaultStyle, "-ml-px rounded-l-md")}
-        onClick={() => handleButtonClick(labels[0], 0)}
+        className={buttonStyle({
+          variant: getVariant(options[0]),
+          position: "start",
+        })}
+        onClick={() => handleButtonClick(options[0])}
       >
-        {labels[0]}
+        {options[0].label}
       </button>
       {getMiddleButtons()}
       <button
         type="button"
-        className={clsx(
-          getActiveStyle(labels.length - 1),
-          defaultStyle,
-          "-ml-px rounded-r-md"
-        )}
-        onClick={() =>
-          handleButtonClick(labels[labels.length - 1], labels.length - 1)
-        }
+        className={buttonStyle({
+          variant: getVariant(options[options.length - 1]),
+          position: "end",
+        })}
+        onClick={() => handleButtonClick(options[options.length - 1])}
       >
-        {labels[labels.length - 1]}
+        {options[options.length - 1].label}
       </button>
     </div>
   );

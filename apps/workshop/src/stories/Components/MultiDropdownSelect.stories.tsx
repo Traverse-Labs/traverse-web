@@ -1,20 +1,43 @@
-import { ComponentStory } from "@storybook/react";
+import { useState } from "react";
 import { MultiDropdownSelect } from "ui";
+import { Option } from "ui/types/Option.type";
+
+const MOCK_OPTIONS = [
+  {
+    value: "U_WALLET",
+    label: "Unique Users",
+  },
+  {
+    value: "TXN",
+    label: "Transactions",
+  },
+  {
+    value: "VOLUME",
+    label: "Volume",
+  },
+];
 
 export default {
   title: "Components/Multi Dropdown Select",
   component: MultiDropdownSelect,
-  argTypes: {
-    options: { control: "object" },
-    onChange: { action: "clicked" },
-  },
+  argTypes: {},
 };
 
-const Template: ComponentStory<typeof MultiDropdownSelect> = (args) => (
-  <MultiDropdownSelect {...args} />
-);
+export const Base = () => {
+  const [values, setValues] = useState<string[] | []>([]);
 
-export const Base = Template.bind({});
-Base.args = {
-  options: ["Deposit", "Withdrawal", "Transfer", "Stake", "Add Liquidity"],
+  const handleChange = (options: Option<string>[]) => {
+    console.log(options);
+    const newValues = options.map((opt) => opt.value);
+
+    setValues(newValues);
+  };
+
+  return (
+    <MultiDropdownSelect
+      values={values}
+      options={MOCK_OPTIONS}
+      onChange={handleChange}
+    />
+  );
 };

@@ -5,7 +5,9 @@ import {
   XMarkIcon,
 } from "@heroicons/react/20/solid";
 import { clsx } from "clsx";
-import { Fragment, MouseEventHandler, useEffect, useState } from "react";
+import { Fragment, MouseEventHandler } from "react";
+
+import { EmptyOption, Option } from "../../types/Option.type";
 
 const sizeOptions = {
   sm: "py-1 px-2",
@@ -17,25 +19,22 @@ const dropdownAlignOptions = {
   right: "right-0",
 };
 
-type Props = {
-  options: string[];
-  defaultOption?: string;
+export type DropdownSelectProps<T> = {
+  value: T | null;
+  options: Option<T | null>[];
   placeholder?: string;
   isFullWidth?: boolean;
   isChevronIconShown?: boolean;
   size?: keyof typeof sizeOptions;
   dropdownAlign?: keyof typeof dropdownAlignOptions;
   isRemovable?: boolean;
-  onChange?: (prevOption: string, newOption: string) => void;
-  isResetOnChange?: boolean;
-  isResetOnRemove?: boolean;
-  value?: string;
+  onChange?: (newOption: Option<T>, prevOption?: Option<T>) => void;
 };
 
-export default function DropdownSelect(props: Props) {
+export default function DropdownSelect<T>(props: DropdownSelectProps<T>) {
   const {
+    value,
     options,
-    defaultOption = null,
     placeholder = "Select Option...",
     isFullWidth,
     isChevronIconShown,
@@ -43,33 +42,24 @@ export default function DropdownSelect(props: Props) {
     dropdownAlign = "left",
     isRemovable,
     onChange,
-    isResetOnChange,
-    isResetOnRemove,
-    value,
   } = props;
 
-  const [selected, setSelected] = useState(defaultOption);
-
-  useEffect(() => {
-    if (value) {
-      setSelected(value);
-    }
-  }, [value]);
+  const currentOption =
+    options.find((opt) => opt.value === value) || EmptyOption;
 
   const handleRemove: MouseEventHandler = (e) => {
     e.preventDefault();
-    onChange && onChange(selected, undefined);
-    isResetOnRemove && setSelected(null);
+    onChange && onChange(EmptyOption, currentOption);
   };
 
-  const handleChange = (option: string) => {
-    onChange && onChange(selected, option);
-    setSelected(option);
-    isResetOnChange && setSelected(null);
+  const handleChange = (optionLabel: string) => {
+    const newOption = options.find((opt) => opt.label === optionLabel);
+
+    onChange && onChange(newOption, currentOption);
   };
 
   return (
-    <Listbox value={selected} onChange={handleChange}>
+    <Listbox value={currentOption.label} onChange={handleChange}>
       {({ open }) => (
         <>
           <div className="relative mt-1">
@@ -83,11 +73,11 @@ export default function DropdownSelect(props: Props) {
             >
               <div className="flex items-center gap-1">
                 <span className="block truncate">
-                  {selected || (
+                  {currentOption?.label || (
                     <span className="italic text-slate-400">{placeholder}</span>
                   )}
                 </span>
-                {isRemovable && selected && (
+                {isRemovable && currentOption && (
                   <XMarkIcon
                     className="isolate h-5 w-5 rounded-full text-teal-500 transition hover:bg-teal-700 hover:text-teal-100"
                     onClick={handleRemove}
@@ -123,7 +113,7 @@ export default function DropdownSelect(props: Props) {
               >
                 {options.map((option) => (
                   <Listbox.Option
-                    key={option}
+                    key={option.label}
                     className={({ active }) =>
                       clsx(
                         "transition-50 transition",
@@ -131,7 +121,7 @@ export default function DropdownSelect(props: Props) {
                         "relative flex cursor-pointer select-none items-center justify-between gap-3 text-ellipsis py-2 px-3"
                       )
                     }
-                    value={option}
+                    value={option.label}
                   >
                     {({ selected, active }) => (
                       <>
@@ -141,7 +131,7 @@ export default function DropdownSelect(props: Props) {
                             "block truncate"
                           )}
                         >
-                          {option}
+                          {option.label}
                         </span>
                         <span
                           className={clsx(

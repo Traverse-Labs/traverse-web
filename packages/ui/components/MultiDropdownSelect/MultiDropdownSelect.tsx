@@ -1,61 +1,95 @@
-import { uniq, without } from "ramda";
-import { useState } from "react";
+import { uniq } from "ramda";
+import { useCallback } from "react";
 
+import { Option } from "../../types/Option.type";
 import { DropdownSelect } from "../DropdownSelect";
 
-type Props = {
-  options: string[];
-  onChange?: (selected: string[]) => void;
+type Props<T> = {
+  values: T[];
+  options: Option<T>[];
+  onChange?: (options: Option<T>[]) => void;
   placeholder?: string;
 };
-const MultiDropdownSelect = (props: Props) => {
-  const { options, onChange, placeholder } = props;
 
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+enum Action {
+  Add,
+  Change,
+}
+
+const MultiDropdownSelect = <T,>(props: Props<T>) => {
+  const { values, options, onChange, placeholder } = props;
+
+  const selectedOptions = useCallback(() => {
+    const temp = [];
+
+    values.map((value) => {
+      const tempOpt = options.filter((opt) => opt.value === value)[0];
+
+      tempOpt && temp.push(tempOpt);
+    });
+
+    return temp;
+  }, [options, values]);
 
   const handleChange = (
-    prevOption: string,
-    selectedOption: string | undefined
+    action: Action,
+    option: Option<T>,
+    prevOption?: Option<T>
   ) => {
-    if (!selectedOption) {
-      const newOptions = without(prevOption, [...selectedOptions]);
+    if (action === Action.Add) {
+      const newOptions = selectedOptions().filter(
+        (opt) => opt.value !== option.value
+      );
 
-      setSelectedOptions(newOptions);
-      onChange && onChange(newOptions);
+      newOptions.push(option);
+      onChange(newOptions);
       return;
     }
 
-    let newOptions = [...selectedOptions];
-    const prevOptionIdx = newOptions.indexOf(prevOption);
+    if (action === Action.Change) {
+      if (option.value === null) {
+        const newOptions = selectedOptions().filter(
+          (opt) => opt.value !== prevOption.value
+        );
 
-    if (prevOptionIdx !== -1) {
-      newOptions[prevOptionIdx] = selectedOption;
-    } else {
-      newOptions.push(selectedOption);
+        onChange(newOptions);
+      } else {
+        const newOptions = [...selectedOptions()];
+        let idx = 0;
+
+        newOptions.forEach((opt, i) => {
+          if (opt.value === prevOption.value) {
+            idx = i;
+          }
+        });
+
+        newOptions[idx] = option;
+
+        onChange(uniq(newOptions));
+      }
     }
-
-    newOptions = uniq(newOptions);
-
-    setSelectedOptions(newOptions);
-    onChange && onChange(newOptions);
   };
+
+  console.log(selectedOptions());
 
   return (
     <div className="flex w-full flex-wrap items-center gap-2">
-      {selectedOptions.map((opt) => (
+      {selectedOptions().map((opt) => (
         <DropdownSelect
-          key={opt}
+          key={opt.label}
+          value={opt.value}
           options={options}
-          defaultOption={opt}
           isRemovable
-          onChange={handleChange}
+          onChange={(opt: Option<T>, prevOpt: Option<T>) =>
+            handleChange(Action.Change, opt, prevOpt)
+          }
         />
       ))}
       <DropdownSelect
+        value={null}
         options={options}
-        onChange={handleChange}
+        onChange={(opt: Option<T>) => handleChange(Action.Add, opt)}
         placeholder={placeholder}
-        isResetOnChange
       />
     </div>
   );

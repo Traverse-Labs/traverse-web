@@ -8,6 +8,7 @@ import {
   VerticalBarChart,
   VerticalBarChartProps,
 } from "ui";
+import { Option } from "ui/types/Option.type";
 
 export type ChartConfig = {
   id?: string;
@@ -16,61 +17,72 @@ export type ChartConfig = {
   metric: Metric;
   period: DataPeriod;
   chartType: ChartType;
-  aggregate?: AggregationMethod;
-  groupBy?: GroupByMethod;
+  aggregate?: AggregationMethod | null;
+  groupBy?: GroupByMethod | null;
 };
-export const AggregationMethods = ["SUM", "AVG"];
+export enum AggregationMethod {
+  SUM = "SUM",
+  AVG = "AVG",
+}
 
-export type AggregationMethod = typeof AggregationMethods[number];
-
-export const AggregationMethodLabels: Record<AggregationMethod, string> = {
-  SUM: "Sum",
-  AVG: "Average",
-};
-
-export const Metrics = ["U_WALLET", "TXN", "VOLUME"];
-
-export type Metric = typeof Metrics[number];
-
-export const MetricLabels: Record<Metric, string> = {
-  U_WALLET: "Unique Users",
-  TXN: "Transactions",
-  VOLUME: "Volume",
-};
-
-export const DataPeriods = ["7", "30"];
-
-export type DataPeriod = typeof DataPeriods[number];
-export const DataPeriodLabels: Record<DataPeriod, string> = {
-  "7": "7D",
-  "30": "30D",
-};
-
-export const GroupByMethods = [
-  "WALLET_AGE",
-  "NFT_HOLDINGS",
-  "SOL_HOLDINGS",
-  "DAPP_INTERACTIONS",
+export const AggregationMethodOptions: Option<AggregationMethod>[] = [
+  {
+    value: AggregationMethod.SUM,
+    label: "Sum",
+  },
+  {
+    value: AggregationMethod.AVG,
+    label: "Average",
+  },
 ];
 
-export type GroupByMethod = typeof GroupByMethods[number];
+export enum Metric {
+  U_WALLET = "U_WALLET",
+  TXN = "TXN",
+  VOLUME = "VOLUME",
+}
 
-export const GroupByMethodLabels: Record<GroupByMethod, string> = {
-  WALLET_AGE: "Wallet Age",
-  NFT_HOLDINGS: "NFT Holdings",
-  SOL_HOLDINGS: "SOL Holdings",
-  DAPP_INTERACTIONS: "dApp Interactions",
-};
+export const MetricOptions: Option<Metric>[] = [
+  { value: Metric.U_WALLET, label: "Unique Users" },
+  { value: Metric.TXN, label: "Transactions" },
+  { value: Metric.VOLUME, label: "Volume" },
+];
 
-export const ChartTypes = ["LINE", "HORIZONTAL_BAR", "VERTICAL_BAR"];
+export enum DataPeriod {
+  PERIOD_7 = "7",
+  PERIOD_30 = "30",
+}
 
-export type ChartType = typeof GroupByMethods[number];
+export const DataPeriodOptions: Option<DataPeriod>[] = [
+  { value: DataPeriod.PERIOD_7, label: "7D" },
+  { value: DataPeriod.PERIOD_30, label: "30D" },
+];
 
-export const ChartTypeLabels: Record<ChartType, string> = {
-  LINE: "Line",
-  HORIZONTAL_BAR: "Horizontal Bar",
-  VERTICAL_BAR: "Vertical Bar",
-};
+export enum GroupByMethod {
+  WALLET_AGE = "WALLET_AGE",
+  NFT_HOLDINGS = "NFT_HOLDINGS",
+  SOL_HOLDINGS = "SOL_HOLDINGS",
+  DAPP_INTERACTIONS = "DAPP_INTERACTIONS",
+}
+
+export const GroupByMethodOptions: Option<GroupByMethod | null>[] = [
+  { value: GroupByMethod.WALLET_AGE, label: "Wallet Age" },
+  { value: GroupByMethod.NFT_HOLDINGS, label: "NFT Holdings" },
+  { value: GroupByMethod.SOL_HOLDINGS, label: "SOL Holdings" },
+  { value: GroupByMethod.DAPP_INTERACTIONS, label: "dApp Interactions" },
+];
+
+export enum ChartType {
+  LINE = "LINE",
+  HORIZONTAL_BAR = "HORIZONTAL_BAR",
+  VERTICAL_BAR = "VERTICAL_BAR",
+}
+
+export const ChartTypeOptions: Option<ChartType>[] = [
+  { value: ChartType.LINE, label: "Line" },
+  { value: ChartType.HORIZONTAL_BAR, label: "Horizontal Bar" },
+  { value: ChartType.VERTICAL_BAR, label: "Vertical Bar" },
+];
 
 export const ChartTypeComponents: Record<
   ChartType,
@@ -79,7 +91,7 @@ export const ChartTypeComponents: Record<
       RefAttributes<ChartRef>
   >
 > = {
-  LINE: LineChart,
-  HORIZONTAL_BAR: HorizontalBarChart,
-  VERTICAL_BAR: VerticalBarChart,
+  [ChartType.LINE]: LineChart,
+  [ChartType.HORIZONTAL_BAR]: HorizontalBarChart,
+  [ChartType.VERTICAL_BAR]: VerticalBarChart,
 };
