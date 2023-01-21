@@ -10,8 +10,8 @@ import { LogoImg } from "ui";
 import DexScanLogo from "../assets/pngs/logos/dex-scan-logo.png";
 
 const navigation = [
-  { name: "Dashboard", href: "/", icon: HomeIcon },
-  { name: "Charts", href: "/chart/new", icon: ChartBarIcon },
+  { name: "Dashboard", href: "/solend", icon: HomeIcon },
+  { name: "Charts", href: "/solend/chart", icon: ChartBarIcon },
 ];
 
 type Props = {

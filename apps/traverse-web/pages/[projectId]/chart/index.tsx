@@ -1,28 +1,35 @@
 import { Button } from "ui";
 
-import { getPageLayout } from "../../src/layouts/Layout";
-import { ChartConfig } from "../../src/types";
+import { getPageLayout } from "../../../src/layouts/Layout";
+import {
+  AggregationMethod,
+  ChartConfig,
+  ChartType,
+  DataPeriod,
+  GroupByMethod,
+  Metric,
+} from "../../../src/types";
 
 const MOCK_CHART_CONFIGS: ChartConfig[] = [
   {
     id: "1",
     name: "This is my first chart",
     instructions: ["Withdrawal", "Deposit"],
-    metric: "U_WALLET",
-    period: "7",
-    chartType: "LINE",
-    aggregate: "SUM",
-    groupBy: "NFT_HOLDINGS",
+    metric: Metric.U_WALLET,
+    period: DataPeriod.PERIOD_7,
+    chartType: ChartType.LINE,
+    aggregate: AggregationMethod.SUM,
+    groupBy: GroupByMethod.NFT_HOLDINGS,
   },
   {
     id: "2",
     name: "This is my second chart",
     instructions: ["Liquidity Pull", "Rug Pull"],
-    metric: "TXN",
-    period: "30",
-    chartType: "HORIZONTAL_BAR",
-    aggregate: "AVERAGE",
-    groupBy: "SOL_HOLDINGS",
+    metric: Metric.TXN,
+    period: DataPeriod.PERIOD_30,
+    chartType: ChartType.HORIZONTAL_BAR,
+    aggregate: AggregationMethod.AVG,
+    groupBy: GroupByMethod.SOL_HOLDINGS,
   },
 ];
 

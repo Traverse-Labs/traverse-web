@@ -24,31 +24,32 @@ import {
 } from "../types";
 
 type Props = {
-  defaultConfig?: ChartConfig;
+  defaultConfig: ChartConfig;
+  instructions: Option<string>[];
 };
 
-const MOCK_INSTRUCTIONS: Option<string>[] = [
-  {
-    value: "Deposit",
-    label: "Deposit",
-  },
-  {
-    value: "Withdrawal",
-    label: "Withdrawal",
-  },
-  {
-    value: "Add Liquidity",
-    label: "Add Liquidity",
-  },
-  {
-    value: "Remove Liquidity",
-    label: "Remove Liquidity",
-  },
-  {
-    value: "Transfer",
-    label: "Transfer",
-  },
-];
+// const MOCK_INSTRUCTIONS: Option<string>[] = [
+//   {
+//     value: "Deposit",
+//     label: "Deposit",
+//   },
+//   {
+//     value: "Withdrawal",
+//     label: "Withdrawal",
+//   },
+//   {
+//     value: "Add Liquidity",
+//     label: "Add Liquidity",
+//   },
+//   {
+//     value: "Remove Liquidity",
+//     label: "Remove Liquidity",
+//   },
+//   {
+//     value: "Transfer",
+//     label: "Transfer",
+//   },
+// ];
 
 const MOCK_CHART_DATA = {
   series: [
@@ -65,7 +66,7 @@ const MOCK_CHART_DATA = {
 };
 
 export const ChartEdit = (props: Props) => {
-  const { defaultConfig } = props;
+  const { defaultConfig, instructions } = props;
 
   const [config, setConfig] = useState<ChartConfig>(defaultConfig);
 
@@ -155,7 +156,7 @@ export const ChartEdit = (props: Props) => {
               </div>
               <MultiDropdownSelect
                 values={config.instructions}
-                options={MOCK_INSTRUCTIONS}
+                options={instructions}
                 onChange={handleInstructionsChange}
                 placeholder="+ Add Event"
               />
