@@ -24,7 +24,7 @@ const ChartCard = (props: Props) => {
 
   return (
     <div className="relative h-full">
-      {isFetching ? (
+      {!chartData || isFetching ? (
         <LoadingSpinner className="text-slate-600" />
       ) : (
         <div className="relative flex h-full space-y-4">

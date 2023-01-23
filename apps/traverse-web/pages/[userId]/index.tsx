@@ -6,24 +6,19 @@ import ChartCard from "../../src/components/ChartCard";
 import ScoreCard from "../../src/components/ScoreCard";
 import { useUserContext } from "../../src/contexts/UserContext";
 import { getPageLayout } from "../../src/layouts/Layout";
-import {
-  ChartConfig,
-  ChartType,
-  DataPeriod,
-  DataPeriodOptions,
-} from "../../src/types";
+import { ChartType, DataPeriod, DataPeriodOptions } from "../../src/types";
 
-type DashboardConfig = {
-  id: number;
-  name: string;
-  user_id: string;
-  charts: ChartConfig[];
-  autoCharts: {
-    chart_id: number;
-    dashboard_id: number;
-    chart_type: ChartType;
-  }[];
-};
+// type DashboardConfig = {
+//   id: number;
+//   name: string;
+//   user_id: string;
+//   charts: ChartConfig[];
+//   autoCharts: {
+//     chart_id: number;
+//     dashboard_id: number;
+//     chart_type: ChartType;
+//   }[];
+// };
 
 const MOCK_DASHBOARD_DATA = {
   id: 10,
