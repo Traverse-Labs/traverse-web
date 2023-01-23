@@ -6,6 +6,7 @@ import { HighchartsDefaults } from "./index";
 if (typeof window !== "undefined") {
   Boost(Highcharts);
 
+  // @ts-ignore
   Highcharts.setOptions(HighchartsDefaults);
 
   // @ts-ignore
