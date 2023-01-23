@@ -6,21 +6,34 @@ import ChartCard from "../../src/components/ChartCard";
 import ScoreCard from "../../src/components/ScoreCard";
 import { useUserContext } from "../../src/contexts/UserContext";
 import { getPageLayout } from "../../src/layouts/Layout";
-import { ChartType, DataPeriod, DataPeriodOptions } from "../../src/types";
+import {
+  AggregationMethod,
+  ChartConfig,
+  ChartType,
+  DataPeriod,
+  DataPeriodOptions,
+  GroupByMethod,
+  Metric,
+} from "../../src/types";
 
-// type DashboardConfig = {
-//   id: number;
-//   name: string;
-//   user_id: string;
-//   charts: ChartConfig[];
-//   autoCharts: {
-//     chart_id: number;
-//     dashboard_id: number;
-//     chart_type: ChartType;
-//   }[];
-// };
+type DashboardConfig = {
+  id: number;
+  name: string;
+  user_id: string;
+  charts: {
+    id: number;
+    name: string;
+    user_id: number;
+    config: ChartConfig;
+  }[];
+  autoCharts: {
+    chart_id: number;
+    dashboard_id: number;
+    chart_type: ChartType;
+  }[];
+};
 
-const MOCK_DASHBOARD_DATA = {
+const MOCK_DASHBOARD_DATA: DashboardConfig = {
   id: 10,
   name: "new dashboar2d",
   user_id: "2",
@@ -28,14 +41,14 @@ const MOCK_DASHBOARD_DATA = {
     {
       id: 40,
       name: "my new chart yo",
-      user_id: "2",
+      user_id: 2,
       config: {
         instructions: ["MintTo", "Burn"],
-        metric: "U_WALLET",
-        period: "30",
-        chartType: "LINE",
-        aggregate: "SUM",
-        groupBy: "SOL_HOLDINGS",
+        metric: Metric.U_WALLET,
+        period: DataPeriod.PERIOD_30,
+        chartType: ChartType.LINE,
+        aggregate: AggregationMethod.SUM,
+        groupBy: GroupByMethod.SOL_HOLDINGS,
       },
     },
   ],
@@ -43,57 +56,57 @@ const MOCK_DASHBOARD_DATA = {
     {
       chart_id: 1,
       dashboard_id: 10,
-      chart_type: "SCORECARD",
+      chart_type: ChartType.SCORECARD,
     },
     {
       chart_id: 2,
       dashboard_id: 10,
-      chart_type: "SCORECARD",
+      chart_type: ChartType.SCORECARD,
     },
     {
       chart_id: 3,
       dashboard_id: 10,
-      chart_type: "SCORECARD",
+      chart_type: ChartType.SCORECARD,
     },
     {
       chart_id: 4,
       dashboard_id: 10,
-      chart_type: "LINE",
+      chart_type: ChartType.LINE,
     },
     {
       chart_id: 5,
       dashboard_id: 10,
-      chart_type: "LINE",
+      chart_type: ChartType.LINE,
     },
     {
       chart_id: 6,
       dashboard_id: 10,
-      chart_type: "LINE",
+      chart_type: ChartType.LINE,
     },
     {
       chart_id: 7,
       dashboard_id: 10,
-      chart_type: "LINE",
+      chart_type: ChartType.LINE,
     },
     {
       chart_id: 8,
       dashboard_id: 10,
-      chart_type: "HORIZONTAL_BAR",
+      chart_type: ChartType.HORIZONTAL_BAR,
     },
     {
       chart_id: 9,
       dashboard_id: 10,
-      chart_type: "VERTICAL_BAR",
+      chart_type: ChartType.VERTICAL_BAR,
     },
     {
       chart_id: 10,
       dashboard_id: 10,
-      chart_type: "HORIZONTAL_BAR",
+      chart_type: ChartType.HORIZONTAL_BAR,
     },
     {
       chart_id: 11,
       dashboard_id: 10,
-      chart_type: "HORIZONTAL_BAR",
+      chart_type: ChartType.HORIZONTAL_BAR,
     },
   ],
 };
@@ -101,7 +114,7 @@ const MOCK_DASHBOARD_DATA = {
 const DashboardPage: NextPageWithLayout<DehydratedStateProps> = () => {
   const { projectName } = useUserContext();
 
-  const [period, setPeriod] = useState(DataPeriod.PERIOD_30);
+  const [period, setPeriod] = useState(DataPeriod.PERIOD_60);
 
   const scorecardConfigs = MOCK_DASHBOARD_DATA.autoCharts.filter(
     (chart) => chart.chart_type === ChartType.SCORECARD

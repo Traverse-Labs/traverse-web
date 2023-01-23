@@ -14,7 +14,7 @@ import { Option } from "ui/types/Option.type";
 
 export type ChartConfig = {
   id?: string;
-  name: string;
+  name?: string;
   instructions: string[];
   metric: Metric;
   period: DataPeriod;
@@ -53,11 +53,13 @@ export const MetricOptions: Option<Metric>[] = [
 export enum DataPeriod {
   PERIOD_7 = "7",
   PERIOD_30 = "30",
+  PERIOD_60 = "60",
 }
 
 export const DataPeriodOptions: Option<DataPeriod>[] = [
   { value: DataPeriod.PERIOD_7, label: "7D" },
   { value: DataPeriod.PERIOD_30, label: "30D" },
+  { value: DataPeriod.PERIOD_60, label: "60D" },
 ];
 
 export enum GroupByMethod {
