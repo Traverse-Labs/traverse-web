@@ -21,12 +21,12 @@ const ScoreCard = (props: Props) => {
   ) as UseQueryResult<ScoreCardData>;
 
   return (
-    <div>
+    <div className="h-full">
       {isLoading ? (
         <LoadingSpinner className="text-slate-600" />
       ) : (
-        <div className="space-y-4">
-          <div className="text-slate-500">{scoreCardData.name}</div>
+        <div className="flex h-full flex-col items-center justify-center space-y-4 lg:items-start">
+          <div className="text-slate-400">{scoreCardData.name}</div>
           <div className="text-5xl font-bold text-teal-300">
             <CountUp
               end={scoreCardData.data as unknown as number}

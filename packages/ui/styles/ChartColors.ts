@@ -10,9 +10,10 @@ const chartColors = {
 };
 
 export const chartPaletteLight = [
-  "#33b1ff",
+  "#7edce2",
   "#fa4d56",
   "#d2a106",
+  "#33b1ff",
   "#8a3ffc",
   "#007d79",
   "#ff7eb6",

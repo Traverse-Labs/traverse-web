@@ -1,5 +1,5 @@
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import { ScoreCardData, SeriesChartData } from "ui";
+import { ChartCardData, ScoreCardData, SeriesChartData } from "ui";
 
 import {
   CONTRACT_AUTO_ANALYSIS_QUERY_KEY,
@@ -37,7 +37,7 @@ export const useGetContractAutoAnalysisData = (
   contractAddress: string,
   chartId: number,
   period: DataPeriod
-): UseQueryResult<SeriesChartData | ScoreCardData> => {
+): UseQueryResult<ChartCardData | ScoreCardData> => {
   return useQuery({
     queryKey: [
       CONTRACT_AUTO_ANALYSIS_QUERY_KEY,
