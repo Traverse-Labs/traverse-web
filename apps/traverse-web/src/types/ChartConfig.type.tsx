@@ -116,3 +116,20 @@ export const ChartTypeComponents: Record<
   [ChartType.HORIZONTAL_BAR]: HorizontalBarChart,
   [ChartType.VERTICAL_BAR]: VerticalBarChart,
 };
+
+export type DashboardConfig = {
+  id: number;
+  name: string;
+  user_id: string;
+  charts: {
+    id: number;
+    name: string;
+    user_id: number;
+    config: ChartConfig;
+  }[];
+  autoCharts: {
+    chart_id: number;
+    dashboard_id: number;
+    chart_type: ChartType;
+  }[];
+};

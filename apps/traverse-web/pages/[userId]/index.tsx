@@ -1,37 +1,26 @@
 import { useState } from "react";
-import { ButtonGroup, DehydratedStateProps, NextPageWithLayout } from "ui";
+import {
+  ButtonGroup,
+  DehydratedStateProps,
+  LoadingSpinner,
+  NextPageWithLayout,
+} from "ui";
 import { Option } from "ui/types/Option.type";
 
+import { useGetDashboardConfig } from "../../src/api/Dashboard.queries";
 import ChartCard from "../../src/components/ChartCard";
 import ScoreCard from "../../src/components/ScoreCard";
 import { useUserContext } from "../../src/contexts/UserContext";
 import { getPageLayout } from "../../src/layouts/Layout";
 import {
   AggregationMethod,
-  ChartConfig,
   ChartType,
+  DashboardConfig,
   DataPeriod,
   DataPeriodOptions,
   GroupByMethod,
   Metric,
 } from "../../src/types";
-
-type DashboardConfig = {
-  id: number;
-  name: string;
-  user_id: string;
-  charts: {
-    id: number;
-    name: string;
-    user_id: number;
-    config: ChartConfig;
-  }[];
-  autoCharts: {
-    chart_id: number;
-    dashboard_id: number;
-    chart_type: ChartType;
-  }[];
-};
 
 const MOCK_DASHBOARD_DATA: DashboardConfig = {
   id: 10,
@@ -115,6 +104,16 @@ const DashboardPage: NextPageWithLayout<DehydratedStateProps> = () => {
   const { projectName } = useUserContext();
 
   const [period, setPeriod] = useState(DataPeriod.PERIOD_60);
+
+  const { data: dashboardConfig, isFetching } = useGetDashboardConfig();
+
+  if (isFetching || !dashboardConfig) {
+    return (
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   const scorecardConfigs = MOCK_DASHBOARD_DATA.autoCharts.filter(
     (chart) => chart.chart_type === ChartType.SCORECARD
