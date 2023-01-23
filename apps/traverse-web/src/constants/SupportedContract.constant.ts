@@ -28,10 +28,6 @@ export const SupportedContractOptions = [
     label: SupportedContract.hubble,
   },
   {
-    value: SupportedContractAddresses[SupportedContract.marinade],
-    label: SupportedContract.marinade,
-  },
-  {
     value: SupportedContractAddresses[SupportedContract.friktion],
     label: SupportedContract.friktion,
   },
