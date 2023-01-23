@@ -1,6 +1,6 @@
 import { UseQueryResult } from "@tanstack/react-query";
+import CountUp from "react-countup";
 import { LoadingSpinner, ScoreCardData } from "ui";
-import { NumberUtil } from "utils";
 
 import { useGetContractAutoAnalysisData } from "../api/Contract.queries";
 import { useUserContext } from "../contexts/UserContext";
@@ -25,14 +25,14 @@ const ScoreCard = (props: Props) => {
       {isLoading ? (
         <LoadingSpinner className="text-slate-600" />
       ) : (
-        <div className="space-y-8">
+        <div className="space-y-4">
           <div className="text-slate-500">{scoreCardData.name}</div>
           <div className="text-5xl font-bold text-teal-300">
-            {NumberUtil.formatNumber(
-              scoreCardData.data as unknown as number,
-              "",
-              "0,0"
-            )}
+            <CountUp
+              end={scoreCardData.data as unknown as number}
+              separator=","
+              duration={1}
+            />
           </div>
         </div>
       )}
