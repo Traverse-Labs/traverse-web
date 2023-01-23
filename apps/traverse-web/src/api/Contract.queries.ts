@@ -1,9 +1,16 @@
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import { SeriesChartData } from "ui";
+import { ScoreCardData, SeriesChartData } from "ui";
 
-import { CONTRACT_INSTRUCTION_QUERY_KEY } from "../constants";
-import { ChartConfig } from "../types";
-import { getContractChartData, getContractInstruction } from "./Contract.api";
+import {
+  CONTRACT_AUTO_ANALYSIS_QUERY_KEY,
+  CONTRACT_INSTRUCTION_QUERY_KEY,
+} from "../constants";
+import { ChartConfig, DataPeriod } from "../types";
+import {
+  getContractAutoAnalysisData,
+  getContractChartData,
+  getContractInstruction,
+} from "./Contract.api";
 
 export const useGetContractInstruction = (
   contractAddress: string
@@ -23,5 +30,23 @@ export const useGetContractChartData = (
     queryKey: [CONTRACT_INSTRUCTION_QUERY_KEY, contractAddress, config],
     queryFn: () => getContractChartData(contractAddress, config),
     enabled: Boolean(contractAddress) && config.instructions.length > 0,
+  });
+};
+
+export const useGetContractAutoAnalysisData = (
+  contractAddress: string,
+  chartId: number,
+  period: DataPeriod
+): UseQueryResult<SeriesChartData | ScoreCardData> => {
+  return useQuery({
+    queryKey: [
+      CONTRACT_AUTO_ANALYSIS_QUERY_KEY,
+      contractAddress,
+      chartId,
+      period,
+    ],
+    queryFn: () =>
+      getContractAutoAnalysisData(contractAddress, chartId, period),
+    enabled: Boolean(contractAddress) && Boolean(chartId),
   });
 };

@@ -1,7 +1,7 @@
 import { ApiClient } from "api-client";
-import { SeriesChartData } from "ui";
+import { ScoreCardData, SeriesChartData } from "ui";
 
-import { ChartConfig } from "../types";
+import { ChartConfig, DataPeriod } from "../types";
 
 export const getContractInstruction = async (contractAddress: string) => {
   const response = await ApiClient.get(
@@ -23,4 +23,21 @@ export const getContractChartData = async (
   );
 
   return response.data as SeriesChartData;
+};
+
+export const getContractAutoAnalysisData = async (
+  contractAddress: string,
+  chartId: number,
+  period: DataPeriod
+) => {
+  const response = await ApiClient.get(
+    `/api/contract/${contractAddress}/auto/${chartId}`,
+    {
+      params: {
+        period,
+      },
+    }
+  );
+
+  return response.data as SeriesChartData | ScoreCardData;
 };

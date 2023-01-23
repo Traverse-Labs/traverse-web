@@ -10,6 +10,7 @@ export const formatPercentage = (num: number) => {
 export const formatNumber = (
   num: number,
   prepend = "",
+  format?: string,
   subscriptSize?: number
 ): ReactNode => {
   if (!num) {
@@ -68,7 +69,7 @@ export const formatNumber = (
     return (
       <span>
         {prepend}
-        {numeral(num).format("0,0.00")}
+        {numeral(num).format(format || "0,0.00")}
       </span>
     );
   }

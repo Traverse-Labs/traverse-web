@@ -73,6 +73,7 @@ export const GroupByMethodOptions: Option<GroupByMethod | null>[] = [
 ];
 
 export enum ChartType {
+  SCORECARD = "SCORECARD",
   LINE = "LINE",
   HORIZONTAL_BAR = "HORIZONTAL_BAR",
   VERTICAL_BAR = "VERTICAL_BAR",
@@ -108,6 +109,7 @@ export const ChartTypeComponents: Record<
       RefAttributes<ChartRef>
   >
 > = {
+  [ChartType.SCORECARD]: LineChart,
   [ChartType.LINE]: LineChart,
   [ChartType.HORIZONTAL_BAR]: HorizontalBarChart,
   [ChartType.VERTICAL_BAR]: VerticalBarChart,

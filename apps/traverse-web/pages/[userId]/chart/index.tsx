@@ -98,7 +98,7 @@ const ChartPage = () => {
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="text-neon mb-4 text-4xl font-bold">{projectName}</div>
       <div className="mb-4 text-2xl font-bold">My Charts</div>
-      {chartConfigs && chartConfigs.length > 0 && { createNewChartButton }}
+      {chartConfigs && chartConfigs.length > 0 && createNewChartButton}
       <div className="space-y-2">
         {isLoadingCharts ? (
           <LoadingSpinner

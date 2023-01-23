@@ -1,15 +1,126 @@
+import { useState } from "react";
 import { DehydratedStateProps, NextPageWithLayout } from "ui";
 
+import ScoreCard from "../../src/components/ScoreCard";
 import { useUserContext } from "../../src/contexts/UserContext";
 import { getPageLayout } from "../../src/layouts/Layout";
+import { ChartConfig, ChartType, DataPeriod } from "../../src/types";
+
+type DashboardConfig = {
+  id: number;
+  name: string;
+  user_id: string;
+  charts: ChartConfig[];
+  autoCharts: {
+    chart_id: number;
+    dashboard_id: number;
+    chart_type: ChartType;
+  }[];
+};
+
+const MOCK_DASHBOARD_DATA = {
+  id: 10,
+  name: "new dashboar2d",
+  user_id: "2",
+  charts: [
+    {
+      id: 40,
+      name: "my new chart yo",
+      user_id: "2",
+      config: {
+        instructions: ["MintTo", "Burn"],
+        metric: "U_WALLET",
+        period: "30",
+        chartType: "LINE",
+        aggregate: "SUM",
+        groupBy: "SOL_HOLDINGS",
+      },
+    },
+  ],
+  autoCharts: [
+    {
+      chart_id: 1,
+      dashboard_id: 10,
+      chart_type: "SCORECARD",
+    },
+    {
+      chart_id: 2,
+      dashboard_id: 10,
+      chart_type: "SCORECARD",
+    },
+    {
+      chart_id: 3,
+      dashboard_id: 10,
+      chart_type: "SCORECARD",
+    },
+    {
+      chart_id: 4,
+      dashboard_id: 10,
+      chart_type: "LINE",
+    },
+    {
+      chart_id: 5,
+      dashboard_id: 10,
+      chart_type: "LINE",
+    },
+    {
+      chart_id: 6,
+      dashboard_id: 10,
+      chart_type: "LINE",
+    },
+    {
+      chart_id: 7,
+      dashboard_id: 10,
+      chart_type: "LINE",
+    },
+    {
+      chart_id: 8,
+      dashboard_id: 10,
+      chart_type: "HORIZONTAL_BAR",
+    },
+    {
+      chart_id: 9,
+      dashboard_id: 10,
+      chart_type: "VERTICAL_BAR",
+    },
+    {
+      chart_id: 10,
+      dashboard_id: 10,
+      chart_type: "HORIZONTAL_BAR",
+    },
+    {
+      chart_id: 11,
+      dashboard_id: 10,
+      chart_type: "HORIZONTAL_BAR",
+    },
+  ],
+};
 
 const DashboardPage: NextPageWithLayout<DehydratedStateProps> = () => {
   const { projectName } = useUserContext();
+
+  const [period] = useState(DataPeriod.PERIOD_30);
+
+  const scorecardConfigs = MOCK_DASHBOARD_DATA.autoCharts.filter(
+    (chart) => chart.chart_type === ChartType.SCORECARD
+  );
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="text-neon mb-4 text-4xl font-bold">{projectName}</div>
       <div className="mb-4 text-2xl font-bold">Dashboard</div>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        {scorecardConfigs.map((config) => {
+          return (
+            <div
+              key={config.chart_id}
+              className="h-fit rounded-lg bg-slate-800/75 p-8 pt-6"
+            >
+              <ScoreCard chartId={config.chart_id} period={period} />
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };
