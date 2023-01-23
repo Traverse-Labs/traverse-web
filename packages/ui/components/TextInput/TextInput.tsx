@@ -7,7 +7,7 @@ const textInputStyle = cva(
   {
     variants: {
       variant: {
-        primary: "bg-slate-900",
+        primary: "bg-slate-800",
         ghost: "border-none bg-transparent focus:border-none focus:ring-0",
       },
     },

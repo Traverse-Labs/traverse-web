@@ -45,9 +45,11 @@ const Home: NextPageWithLayout<DehydratedStateProps> = () => {
   return (
     <div className="flex h-full flex-1">
       <div className="flex h-full w-full flex-row gap-28">
-        <div className="flex w-1/2 flex-col justify-center space-y-6">
-          <div className="text-neon text-7xl font-bold">Traverse Analytics</div>
-          <div className="text-2xl">
+        <div className="flex w-full flex-col justify-center space-y-6 px-8 lg:w-1/2 lg:px-2">
+          <div className="text-neon text-center text-7xl font-bold lg:text-left">
+            Traverse Analytics
+          </div>
+          <div className="text-center text-2xl lg:text-left">
             Super simple self-service smart contract analytics platform for your
             business decisions on Solana
           </div>
@@ -55,8 +57,9 @@ const Home: NextPageWithLayout<DehydratedStateProps> = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Register with your email address..."
+            classname="bg-slate-800"
           />
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col items-center gap-2 lg:flex-row">
             <div>Select a project to explore</div>
             <DropdownSelect
               value={programAddress}
@@ -65,15 +68,17 @@ const Home: NextPageWithLayout<DehydratedStateProps> = () => {
               isChevronIconShown
             />
           </div>
-          <Button
-            variant="primary"
-            classname="w-fit"
-            onClick={handleButtonClick}
-          >
-            {isLoading ? <LoadingSpinner /> : <div>Get Started</div>}
-          </Button>
+          <div className="flex w-full justify-center lg:justify-start">
+            <Button
+              variant="primary"
+              classname="w-fit text-base background-neon"
+              onClick={handleButtonClick}
+            >
+              {isLoading ? <LoadingSpinner /> : <div>Get Started</div>}
+            </Button>
+          </div>
         </div>
-        <div className="relative flex flex-1 -scale-x-100 transform">
+        <div className="relative flex hidden flex-1 -scale-x-100 transform lg:block">
           <Image
             layout="fill"
             objectFit="contain"

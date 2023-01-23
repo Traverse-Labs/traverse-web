@@ -10,6 +10,10 @@
   text-shadow: 0px 0px 10px #FF007F;
 }
 
+.background-neon {
+  background: linear-gradient(90deg, #A43FF4 0%, #F43F75 100%);
+}
+
 /* For Webkit-based browsers (Chrome, Safari and Opera) */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
