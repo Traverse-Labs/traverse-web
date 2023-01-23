@@ -3,8 +3,9 @@ import { createContext, useContext } from "react";
 
 type UserContextType = {
   userId: string;
-  contractAddress: string;
-  instructions: string[];
+  programAddress: string;
+  email: string;
+  projectName: string;
 };
 
 export const UserContext = createContext<UserContextType>(

@@ -1,21 +1,29 @@
-import { USER_ID_LS_KEY } from "../constants";
+import { ApiClient } from "api-client";
+import { NextRouter } from "next/router";
+import { useEffect, useRef, useState } from "react";
 
-export const useLoggedInUser = () => {
-  let userId = "";
+import { getUser } from "../api/User.api";
+import { USER_ID_LS_KEY } from "../constants";
+import { User } from "../types/User.type";
+
+export const useLoggedInUser = (router: NextRouter) => {
+  const userRef = useRef<string>();
+  const [user, setUser] = useState<User>({});
 
   if (typeof window !== "undefined") {
-    userId = localStorage.getItem(USER_ID_LS_KEY) as string;
+    userRef.current = localStorage.getItem(USER_ID_LS_KEY) as string;
   }
 
-  return {
-    userId,
-    contractAddress: "CrX7kMhLC3cSsXJdT7JDgqrRVWGnUpX3gfEfxxU2NVLi",
-    instructions: [
-      "CloseAccount",
-      "DepositStake",
-      "Burn",
-      "MintTo",
-      "SyncNative",
-    ],
-  };
+  useEffect(() => {
+    const userId = userRef.current;
+
+    if (userId) {
+      ApiClient.defaults.headers["x-user-id"] = userId;
+      getUser(userId).then((userInfo) => {
+        setUser(userInfo);
+      });
+    }
+  }, [router]);
+
+  return user;
 };

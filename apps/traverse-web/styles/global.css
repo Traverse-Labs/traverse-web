@@ -6,6 +6,10 @@
   background: linear-gradient(110.38deg, #0F172A 5.65%, #12102A 39.06%, #140D22 70.02%, #200C23 100%);
 }
 
+.text-neon {
+  text-shadow: 0px 0px 10px #FF007F;
+}
+
 /* For Webkit-based browsers (Chrome, Safari and Opera) */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;

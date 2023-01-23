@@ -6,9 +6,12 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Fragment, ReactElement, ReactNode, useState } from "react";
 import { LogoImg } from "ui";
+import { ObjectUtil } from "utils";
 
 import DexScanLogo from "../assets/pngs/logos/dex-scan-logo.png";
-import { useUserContext } from "../contexts/UserContext";
+import { SupportedContractOptions } from "../constants";
+import { UserContext } from "../contexts/UserContext";
+import { useLoggedInUser } from "../hooks";
 
 type Props = {
   children: ReactNode;
@@ -27,11 +30,20 @@ const navigation = [
 const Layout = (props: Props) => {
   const { children } = props;
 
-  const { userId } = useUserContext();
+  const router = useRouter();
+
+  const user = useLoggedInUser(router);
+
+  const projectName = ObjectUtil.getLabelFromOptions(
+    SupportedContractOptions,
+    user.programAddress
+  );
+
+  console.log(user);
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const router = useRouter();
+  const isHomePage = router.pathname === "/";
 
   const logo = (
     <div className="flex w-full items-center justify-between md:justify-start md:gap-1">
@@ -70,7 +82,7 @@ const Layout = (props: Props) => {
       );
 
       return (
-        <Link key={item.name} href={`/${userId}${item.href}`}>
+        <Link key={item.name} href={`/${user.id}${item.href}`}>
           {navMenu}
         </Link>
       );
@@ -171,11 +183,20 @@ const Layout = (props: Props) => {
 
   return (
     <div className="fixed-body custom-background-color text-slate-50">
-      {mobileSideBar}
-      {desktopSideBar}
+      {!isHomePage && mobileSideBar}
+      {!isHomePage && desktopSideBar}
       <div className="flex h-full flex-1 flex-col md:pl-14">
-        {mobileSideBarToggle}
-        <main className="flex-1 overflow-auto py-8">{children}</main>
+        {!isHomePage && mobileSideBarToggle}
+        <UserContext.Provider
+          value={{
+            userId: user.id,
+            email: user.email,
+            programAddress: user.programAddress,
+            projectName,
+          }}
+        >
+          <main className="flex-1 overflow-auto py-8">{children}</main>
+        </UserContext.Provider>
       </div>
     </div>
   );

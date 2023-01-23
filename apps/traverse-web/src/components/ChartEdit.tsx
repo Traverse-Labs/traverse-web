@@ -18,7 +18,10 @@ import {
   useCreateChartMutation,
   useUpdateChartMutation,
 } from "../api/Chart.queries";
-import { useGetContractChartData } from "../api/Contract.queries";
+import {
+  useGetContractChartData,
+  useGetContractInstruction,
+} from "../api/Contract.queries";
 import { useUserContext } from "../contexts/UserContext";
 import {
   AggregationMethod,
@@ -54,7 +57,8 @@ export const ChartEdit = (props: Props) => {
 
   const [config, setConfig] = useState<ChartConfig>(defaultConfig);
 
-  const { userId, instructions, contractAddress } = useUserContext();
+  const { userId, programAddress, projectName } = useUserContext();
+
   const handleSuccessCallback = () => {
     router.push(`/${userId}/chart`);
   };
@@ -73,7 +77,10 @@ export const ChartEdit = (props: Props) => {
   const isSavingInProgress = isUpdating || isCreating;
 
   const { data: chartData, isFetching: isChartDataFetching } =
-    useGetContractChartData(contractAddress, config);
+    useGetContractChartData(programAddress, config);
+
+  const { data: instructions, isFetching: isInstructionsDataLoading } =
+    useGetContractInstruction(programAddress);
 
   const instructionOptions = (instructions || []).map((i) => ({
     value: i,
@@ -125,9 +132,10 @@ export const ChartEdit = (props: Props) => {
   };
 
   return (
-    <div className="mx-4 pt-4 pb-16 text-slate-300 sm:mx-0">
+    <div className="mx-4 pb-16 text-slate-300 sm:mx-0">
       <header>
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <div className="text-neon mb-4 text-4xl font-bold">{projectName}</div>
           <div className="cursor-pointer text-slate-500">
             <Link href={`/${userId}/chart`}>
               <div className="relative -left-2 flex w-fit items-center gap-1 rounded-lg p-2 pr-4 transition hover:bg-slate-800/50">
@@ -172,12 +180,16 @@ export const ChartEdit = (props: Props) => {
                   Select the events you want to analyze
                 </div>
               </div>
-              <MultiDropdownSelect
-                values={config.instructions}
-                options={instructionOptions}
-                onChange={handleInstructionsChange}
-                placeholder="+ Add Event"
-              />
+              {isInstructionsDataLoading ? (
+                <LoadingSpinner />
+              ) : (
+                <MultiDropdownSelect
+                  values={config.instructions}
+                  options={instructionOptions}
+                  onChange={handleInstructionsChange}
+                  placeholder="+ Add Event"
+                />
+              )}
               <div className="flex flex-col items-start gap-2 lg:flex-row lg:items-center">
                 <div className="text-slate-400">...aggregated by</div>
                 <DropdownSelect

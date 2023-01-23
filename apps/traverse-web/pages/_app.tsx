@@ -16,13 +16,9 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query";
 import { initializeAmplitude } from "analytics";
-import { ApiClient } from "api-client";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { LayoutFn } from "ui";
-
-import { UserContext } from "../src/contexts/UserContext";
-import { useLoggedInUser } from "../src/hooks";
 
 // TODO: update this
 const TITLE = "Traverse Analytics";
@@ -50,7 +46,7 @@ const queryClient = new QueryClient({
     },
   },
 });
-//
+
 // if (typeof window !== "undefined") {
 //   const localStoragePersister = createSyncStoragePersister({
 //     storage: window.localStorage,
@@ -64,11 +60,6 @@ const queryClient = new QueryClient({
 // }
 
 function MyApp({ Component, pageProps }: MyAppProps) {
-  const { userId, contractAddress, instructions } = useLoggedInUser();
-
-  ApiClient.defaults.headers.common["x-user-id"] = "2";
-  // ApiClient.defaults.headers.common["x-user-id"] = userId;
-
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
@@ -93,12 +84,8 @@ function MyApp({ Component, pageProps }: MyAppProps) {
         <StyledEngineProvider injectFirst>
           <QueryClientProvider client={queryClient}>
             <Hydrate state={pageProps.dehydratedState}>
-              <UserContext.Provider
-                value={{ userId, contractAddress, instructions }}
-              >
-                {/* @ts-ignore */}
-                {getLayout(<Component {...pageProps} />)}
-              </UserContext.Provider>
+              {/* @ts-ignore */}
+              {getLayout(<Component {...pageProps} />)}
             </Hydrate>
           </QueryClientProvider>
         </StyledEngineProvider>

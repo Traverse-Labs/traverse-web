@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
-import { DehydratedStateProps } from "ui";
 
 import { useGetChartConfig } from "../../../../src/api/Chart.queries";
 import { ChartEdit } from "../../../../src/components/ChartEdit";
@@ -10,9 +9,7 @@ interface IParams extends ParsedUrlQuery {
   chartId: string;
 }
 
-type Props = DehydratedStateProps;
-
-const EditChartPage = (_props: Props) => {
+const EditChartPage = () => {
   const router = useRouter();
   const { chartId } = router.query as IParams;
 

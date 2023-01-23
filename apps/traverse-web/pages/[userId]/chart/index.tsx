@@ -17,6 +17,8 @@ const ChartPage = () => {
 
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
+  const { projectName } = useUserContext();
+
   const {
     data: chartConfigs,
     isLoading: isLoadingCharts,
@@ -38,6 +40,32 @@ const ChartPage = () => {
     e.preventDefault();
     setDeletingId(chartId);
     deleteChart(chartId);
+  };
+
+  const createNewChartButton = (
+    <Link href={`/${userId}/chart/new`}>
+      <div>
+        <Button variant="primary" classname="mb-4">
+          Create New Chart
+        </Button>
+      </div>
+    </Link>
+  );
+
+  const emptyDisplay = () => {
+    if (chartConfigs && chartConfigs.length === 0) {
+      return (
+        <div className="flex h-80 w-full flex-col items-center justify-center gap-4 rounded-lg bg-slate-800/75">
+          <div>
+            You have not created any custom chart, create one now for your
+            project!
+          </div>
+          {createNewChartButton}
+        </div>
+      );
+    }
+
+    return null;
   };
 
   const charts = (chartConfigs || []).map((config) => (
@@ -68,14 +96,9 @@ const ChartPage = () => {
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div className="mb-4 text-3xl font-bold">My Charts</div>
-      <Link href={`/${userId}/chart/new`}>
-        <div>
-          <Button variant="primary" classname="mb-4">
-            Create New Chart
-          </Button>
-        </div>
-      </Link>
+      <div className="text-neon mb-4 text-4xl font-bold">{projectName}</div>
+      <div className="mb-4 text-2xl font-bold">My Charts</div>
+      {chartConfigs && chartConfigs.length > 0 && { createNewChartButton }}
       <div className="space-y-2">
         {isLoadingCharts ? (
           <LoadingSpinner
@@ -85,6 +108,7 @@ const ChartPage = () => {
         ) : (
           charts
         )}
+        {emptyDisplay()}
       </div>
     </div>
   );
