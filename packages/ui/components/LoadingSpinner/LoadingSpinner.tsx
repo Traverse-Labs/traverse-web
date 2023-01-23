@@ -2,9 +2,11 @@ import { clsx } from "clsx";
 
 type Props = {
   size?: "sm" | "md" | "lg";
+  label?: string;
+  className?: string;
 };
 const LoadingSpinner = (props: Props) => {
-  const { size = "md" } = props;
+  const { size = "md", label, className } = props;
 
   let dimension = "";
 
@@ -21,13 +23,10 @@ const LoadingSpinner = (props: Props) => {
   }
 
   return (
-    <div role="status">
+    <div role="status" className={clsx("flex items-center gap-1", className)}>
       <svg
         aria-hidden="true"
-        className={clsx(
-          "mr-2 animate-spin fill-cyan-600 text-slate-200 dark:text-slate-600",
-          dimension
-        )}
+        className={clsx("mr-2 animate-spin fill-teal-400", dimension)}
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -41,7 +40,7 @@ const LoadingSpinner = (props: Props) => {
           fill="currentFill"
         />
       </svg>
-      <span className="sr-only">Loading</span>
+      {label && <div className="text-sm">{label}</div>}
     </div>
   );
 };

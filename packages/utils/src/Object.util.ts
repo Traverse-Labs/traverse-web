@@ -1,3 +1,14 @@
-export const getKeyByValue = (object: object, value: any) => {
-  return Object.keys(object).find((key) => object[key] === value);
+import { Option } from "ui/types/Option.type";
+
+export const getLabelFromOptions = <T>(
+  options: Option<T>[],
+  value: T
+): string | null => {
+  const option = options.find((opt) => opt.value === value);
+
+  if (option) {
+    return option.label;
+  }
+
+  return null;
 };

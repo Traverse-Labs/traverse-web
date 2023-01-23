@@ -3,8 +3,8 @@ import axios, { AxiosError } from "axios";
 
 const ApiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
-  headers: {
-    "x-user-id": "2",
+  paramsSerializer: {
+    indexes: null, // by default: false
   },
 });
 

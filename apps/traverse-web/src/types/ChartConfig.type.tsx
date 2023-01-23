@@ -1,3 +1,5 @@
+import BarChartRoundedIcon from "@mui/icons-material/BarChartRounded";
+import ShowChartRoundedIcon from "@mui/icons-material/ShowChartRounded";
 import { ForwardRefExoticComponent, RefAttributes } from "react";
 import {
   ChartRef,
@@ -39,13 +41,13 @@ export const AggregationMethodOptions: Option<AggregationMethod>[] = [
 export enum Metric {
   U_WALLET = "U_WALLET",
   TXN = "TXN",
-  VOLUME = "VOLUME",
+  VOLUME = "VOL",
 }
 
 export const MetricOptions: Option<Metric>[] = [
   { value: Metric.U_WALLET, label: "Unique Users" },
   { value: Metric.TXN, label: "Transactions" },
-  { value: Metric.VOLUME, label: "Volume" },
+  { value: Metric.VOLUME, label: "Volume (USD)" },
 ];
 
 export enum DataPeriod {
@@ -59,14 +61,12 @@ export const DataPeriodOptions: Option<DataPeriod>[] = [
 ];
 
 export enum GroupByMethod {
-  WALLET_AGE = "WALLET_AGE",
   NFT_HOLDINGS = "NFT_HOLDINGS",
   SOL_HOLDINGS = "SOL_HOLDINGS",
   DAPP_INTERACTIONS = "DAPP_INTERACTIONS",
 }
 
 export const GroupByMethodOptions: Option<GroupByMethod | null>[] = [
-  { value: GroupByMethod.WALLET_AGE, label: "Wallet Age" },
   { value: GroupByMethod.NFT_HOLDINGS, label: "NFT Holdings" },
   { value: GroupByMethod.SOL_HOLDINGS, label: "SOL Holdings" },
   { value: GroupByMethod.DAPP_INTERACTIONS, label: "dApp Interactions" },
@@ -77,11 +77,28 @@ export enum ChartType {
   HORIZONTAL_BAR = "HORIZONTAL_BAR",
   VERTICAL_BAR = "VERTICAL_BAR",
 }
+export const ChartTypeIcons = {
+  [ChartType.LINE]: <ShowChartRoundedIcon />,
+  [ChartType.HORIZONTAL_BAR]: <BarChartRoundedIcon className="rotate-90" />,
+  [ChartType.VERTICAL_BAR]: <BarChartRoundedIcon />,
+};
 
 export const ChartTypeOptions: Option<ChartType>[] = [
-  { value: ChartType.LINE, label: "Line" },
-  { value: ChartType.HORIZONTAL_BAR, label: "Horizontal Bar" },
-  { value: ChartType.VERTICAL_BAR, label: "Vertical Bar" },
+  {
+    value: ChartType.LINE,
+    label: "Line",
+    icon: ChartTypeIcons[ChartType.LINE],
+  },
+  {
+    value: ChartType.HORIZONTAL_BAR,
+    label: "Horizontal Bar",
+    icon: ChartTypeIcons[ChartType.HORIZONTAL_BAR],
+  },
+  {
+    value: ChartType.VERTICAL_BAR,
+    label: "Vertical Bar",
+    icon: ChartTypeIcons[ChartType.VERTICAL_BAR],
+  },
 ];
 
 export const ChartTypeComponents: Record<

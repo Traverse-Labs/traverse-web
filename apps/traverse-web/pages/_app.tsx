@@ -7,6 +7,8 @@ import {
   StyledEngineProvider,
   ThemeProvider,
 } from "@mui/material";
+// import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
+// import { persistQueryClient } from "@tanstack/react-query-persist-client";
 import {
   DehydratedState,
   Hydrate,
@@ -14,10 +16,13 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query";
 import { initializeAmplitude } from "analytics";
+import { ApiClient } from "api-client";
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import { useState } from "react";
 import { LayoutFn } from "ui";
+
+import { UserContext } from "../src/contexts/UserContext";
+import { useLoggedInUser } from "../src/hooks";
 
 // TODO: update this
 const TITLE = "Traverse Analytics";
@@ -37,17 +42,32 @@ const darkTheme = createTheme({
 
 initializeAmplitude();
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      cacheTime: 1000 * 60 * 60 * 24, // 24 hours
+    },
+  },
+});
+//
+// if (typeof window !== "undefined") {
+//   const localStoragePersister = createSyncStoragePersister({
+//     storage: window.localStorage,
+//   });
+//
+//   persistQueryClient({
+//     queryClient,
+//     persister: localStoragePersister,
+//     buster: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA,
+//   });
+// }
+
 function MyApp({ Component, pageProps }: MyAppProps) {
-  const [queryClient] = useState(
-    () =>
-      new QueryClient({
-        defaultOptions: {
-          queries: {
-            refetchOnWindowFocus: false,
-          },
-        },
-      })
-  );
+  const { userId, contractAddress, instructions } = useLoggedInUser();
+
+  ApiClient.defaults.headers.common["x-user-id"] = "2";
+  // ApiClient.defaults.headers.common["x-user-id"] = userId;
 
   const getLayout = Component.getLayout ?? ((page) => page);
 
@@ -73,8 +93,12 @@ function MyApp({ Component, pageProps }: MyAppProps) {
         <StyledEngineProvider injectFirst>
           <QueryClientProvider client={queryClient}>
             <Hydrate state={pageProps.dehydratedState}>
-              {/* @ts-ignore */}
-              {getLayout(<Component {...pageProps} />)}
+              <UserContext.Provider
+                value={{ userId, contractAddress, instructions }}
+              >
+                {/* @ts-ignore */}
+                {getLayout(<Component {...pageProps} />)}
+              </UserContext.Provider>
             </Hydrate>
           </QueryClientProvider>
         </StyledEngineProvider>

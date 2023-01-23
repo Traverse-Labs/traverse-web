@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.custom-background-color {
+  background: linear-gradient(110.38deg, #0F172A 5.65%, #12102A 39.06%, #140D22 70.02%, #200C23 100%);
+}
+
 /* For Webkit-based browsers (Chrome, Safari and Opera) */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;

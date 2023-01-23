@@ -1,5 +1,7 @@
 import colors from "tailwindcss/colors";
 
+import { FontSizes } from "../../../styles";
+
 const HighchartsDefaults = {
   lang: {
     thousandsSep: ",",
@@ -7,10 +9,32 @@ const HighchartsDefaults = {
     rangeSelectorZoom: "Zoom",
   },
 
-  chart: {
-    backgroundColor: colors.slate[800],
+  plotOptions: {
+    series: {
+      marker: {
+        radius: 3,
+      },
+      boostThreshold: 2000,
+      animation: {
+        duration: 1000,
+      },
+      borderColor: "transparent",
+    },
+  },
+
+  title: {
+    align: "left",
     style: {
-      fontFamily: "Noto Sans, sans-serif",
+      color: colors.slate[50],
+      fontSize: FontSizes.size14,
+    },
+    margin: 40,
+  },
+
+  chart: {
+    backgroundColor: `transparent`,
+    style: {
+      fontFamily: "Inter, sans-serif",
     },
   },
 
@@ -26,13 +50,15 @@ const HighchartsDefaults = {
         color: colors.slate[400],
       },
     },
+    crosshair: {
+      color: colors.slate[700],
+    },
   },
 
   yAxis: {
     title: {
       style: {
-        color: colors.slate[50],
-        fontWeight: "bold",
+        color: colors.slate[400],
       },
     },
     labels: {
@@ -40,6 +66,7 @@ const HighchartsDefaults = {
         color: colors.slate[400],
       },
     },
+    gridLineColor: colors.slate[700],
   },
 
   tooltip: {

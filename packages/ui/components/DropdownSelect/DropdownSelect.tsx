@@ -73,7 +73,12 @@ export default function DropdownSelect<T>(props: DropdownSelectProps<T>) {
             >
               <div className="flex items-center gap-1">
                 <span className="block truncate">
-                  {currentOption?.label || (
+                  {currentOption?.label ? (
+                    <div className="flex items-center gap-1">
+                      {currentOption.icon || null}
+                      {currentOption.label}
+                    </div>
+                  ) : (
                     <span className="italic text-slate-400">{placeholder}</span>
                   )}
                 </span>
@@ -128,9 +133,10 @@ export default function DropdownSelect<T>(props: DropdownSelectProps<T>) {
                         <span
                           className={clsx(
                             selected ? "font-semibold" : "font-normal",
-                            "block truncate"
+                            "block flex items-center gap-1 truncate"
                           )}
                         >
+                          {option.icon || null}
                           {option.label}
                         </span>
                         <span

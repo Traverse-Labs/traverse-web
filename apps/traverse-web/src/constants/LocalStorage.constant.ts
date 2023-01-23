@@ -1,1 +1,1 @@
-export const CHART_STATE_LS_KEY = "chart_state";
+export const USER_ID_LS_KEY = "traverse-analytics-user-id";

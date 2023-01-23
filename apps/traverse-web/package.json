@@ -16,8 +16,11 @@
     "@emotion/styled": "^11.10.5",
     "@headlessui/react": "^1.7.7",
     "@heroicons/react": "^2.0.13",
+    "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.3",
+    "@tanstack/query-sync-storage-persister": "^4.22.4",
     "@tanstack/react-query": "^4.19.1",
+    "@tanstack/react-query-persist-client": "^4.22.4",
     "analytics": "*",
     "api-client": "*",
     "clsx": "^1.2.1",
@@ -35,8 +38,10 @@
     "utils": "*"
   },
   "devDependencies": {
+    "@svgr/webpack": "^6.5.1",
     "@types/node": "18.11.18",
     "@typescript-eslint/eslint-plugin": "^5.46.0",
+    "@typescript-eslint/parser": "^5.48.0",
     "config": "*",
     "eslint": "^8.31.0",
     "eslint-config-next": "^12.3.4",
@@ -45,8 +50,6 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-simple-import-sort": "^8.0.0",
-    "@typescript-eslint/parser": "^5.48.0",
-    "typescript": "4.9.4",
-    "@svgr/webpack": "^6.5.1"
+    "typescript": "4.9.4"
   }
 }

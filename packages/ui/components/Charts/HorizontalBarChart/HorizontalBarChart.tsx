@@ -4,9 +4,8 @@ import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { mergeDeepRight } from "ramda";
 import React, { forwardRef } from "react";
-import colors from "tailwindcss/colors";
 
-import { chartPaletteLight, FontSizes } from "../../../styles";
+import { chartPaletteLight } from "../../../styles";
 import { ChartRef, SeriesChartData } from "../../../types";
 
 export type HorizontalBarChartProps = {
@@ -18,7 +17,6 @@ export type HorizontalBarChartProps = {
     seriesLabel?: string;
     formatY?: string;
     tooltipPointFormat?: string;
-    height?: number;
     isMarkerShown?: boolean;
     isLegendShown?: boolean;
     customOptions?: object;
@@ -42,7 +40,6 @@ const HorizontalBarChart = forwardRef<ChartRef, HorizontalBarChartProps>(
       categoryLabel,
       seriesLabel,
       title,
-      height,
       formatY,
       isMarkerShown,
       isLegendShown,
@@ -63,49 +60,27 @@ const HorizontalBarChart = forwardRef<ChartRef, HorizontalBarChartProps>(
       chart: {
         type: "bar",
         marginTop: !title ? 32 : undefined,
-        height,
-        backgroundColor: colors.slate[800],
       },
       plotOptions: {
         series: {
           marker: {
             enabled: isMarkerShown,
-            radius: 3,
           },
-          boostThreshold: 2000,
-          animation: {
-            duration: 1000,
-          },
-          borderColor: colors.slate[900],
         },
       },
       title: {
         text: title,
-        align: "left",
-        style: {
-          color: colors.slate[50],
-          fontSize: FontSizes.size14,
-        },
-        margin: 40,
       },
       xAxis: {
         categories: data.categories,
         title: {
           text: categoryLabel,
         },
-        crosshair: {
-          color: colors.slate[700],
-        },
       },
       yAxis: {
-        min: 0,
         title: {
           text: seriesLabel,
         },
-        labels: {
-          ...(formatY ? { format: formatY } : {}),
-        },
-        gridLineColor: colors.slate[700],
       },
       tooltip: {
         shared: isSharedTooltip,

@@ -1,15 +1,33 @@
+import { cva, VariantProps } from "class-variance-authority";
 import { clsx } from "clsx";
 import { ChangeEvent } from "react";
+
+const textInputStyle = cva(
+  "block w-full rounded-md border-slate-700 text-slate-200 shadow-sm focus:border-teal-500 focus:ring-teal-500",
+  {
+    variants: {
+      variant: {
+        primary: "bg-slate-900",
+        ghost: "border-none bg-transparent focus:border-none focus:ring-0",
+      },
+    },
+    defaultVariants: {
+      variant: "primary",
+    },
+  }
+);
+
+export type TextInputStyleProps = VariantProps<typeof textInputStyle>;
 
 type Props = {
   placeholder?: string;
   value?: string;
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   classname?: string;
-  isTextOnly?: boolean;
-};
+} & TextInputStyleProps;
+
 const TextInput = (props: Props) => {
-  const { placeholder, value, onChange, classname, isTextOnly = false } = props;
+  const { placeholder, value, onChange, classname, variant } = props;
 
   return (
     <input
@@ -17,11 +35,7 @@ const TextInput = (props: Props) => {
       value={value}
       onChange={onChange}
       placeholder={placeholder}
-      className={clsx(
-        "block w-full rounded-md border-slate-700 bg-slate-800 text-slate-200 shadow-sm focus:border-teal-500 focus:ring-teal-500",
-        isTextOnly && "border-none bg-slate-900 focus:border-none focus:ring-0",
-        classname
-      )}
+      className={clsx(textInputStyle({ variant }), classname)}
     />
   );
 };

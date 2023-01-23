@@ -8,18 +8,26 @@ import { Fragment, ReactElement, ReactNode, useState } from "react";
 import { LogoImg } from "ui";
 
 import DexScanLogo from "../assets/pngs/logos/dex-scan-logo.png";
-
-const navigation = [
-  { name: "Dashboard", href: "/solend", icon: HomeIcon },
-  { name: "Charts", href: "/solend/chart", icon: ChartBarIcon },
-];
+import { useUserContext } from "../contexts/UserContext";
 
 type Props = {
   children: ReactNode;
 };
 
+const navigation = [
+  { name: "Dashboard", href: `/`, pathname: "/[userId]", icon: HomeIcon },
+  {
+    name: "Charts",
+    href: `/chart`,
+    pathname: "/[userId]/chart",
+    icon: ChartBarIcon,
+  },
+];
+
 const Layout = (props: Props) => {
   const { children } = props;
+
+  const { userId } = useUserContext();
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -41,7 +49,7 @@ const Layout = (props: Props) => {
       const navMenu = (
         <div
           className={clsx(
-            router.pathname === item.href
+            router.pathname === item.pathname
               ? "bg-slate-100 text-slate-900"
               : "text-slate-600 hover:bg-slate-50 hover:text-slate-900",
             "group mb-3 flex cursor-pointer items-center rounded-md px-2 py-2 text-sm font-medium transition"
@@ -50,7 +58,7 @@ const Layout = (props: Props) => {
         >
           <item.icon
             className={clsx(
-              router.pathname === item.href
+              router.pathname === item.pathname
                 ? "text-slate-500"
                 : "text-slate-400 group-hover:text-slate-500",
               "mr-4 h-6 w-6 flex-shrink-0 "
@@ -62,7 +70,7 @@ const Layout = (props: Props) => {
       );
 
       return (
-        <Link key={item.name} href={item.href}>
+        <Link key={item.name} href={`/${userId}${item.href}`}>
           {navMenu}
         </Link>
       );
@@ -86,7 +94,6 @@ const Layout = (props: Props) => {
         >
           <div className="fixed inset-0 bg-slate-600 bg-opacity-20 backdrop-blur" />
         </Transition.Child>
-
         <div className="fixed inset-0 z-40 flex">
           <Transition.Child
             as={Fragment}
@@ -136,16 +143,16 @@ const Layout = (props: Props) => {
   );
 
   const mobileSideBarToggle = (
-    <div className="sticky top-0 z-10 flex flex h-11 flex-shrink-0 items-center gap-4 border-b border-slate-800 bg-slate-900 shadow md:hidden md:h-14">
+    <div className="sticky top-0 z-10 flex flex h-11 flex-shrink-0 items-center gap-4 md:hidden md:h-14">
       <button
         type="button"
-        className="h-full border border-slate-800 px-3 text-slate-500 focus:outline-none focus:ring-1 focus:ring-inset focus:ring-white md:px-4"
+        className="h-full px-3 text-slate-500 focus:outline-none md:px-4"
         onClick={() => setSidebarOpen(true)}
       >
         <span className="sr-only">Open sidebar</span>
-        <Bars3BottomLeftIcon className="h-5 md:w-5" aria-hidden="true" />
+        <Bars3BottomLeftIcon className="h-6 md:w-6" aria-hidden="true" />
       </button>
-      <div className="text-slate-500">Traverse Analytics</div>
+      <div className="text-base text-slate-400">Traverse Analytics</div>
     </div>
   );
 
@@ -163,7 +170,7 @@ const Layout = (props: Props) => {
   );
 
   return (
-    <div className="fixed-body text-slate-50">
+    <div className="fixed-body custom-background-color text-slate-50">
       {mobileSideBar}
       {desktopSideBar}
       <div className="flex h-full flex-1 flex-col md:pl-14">
