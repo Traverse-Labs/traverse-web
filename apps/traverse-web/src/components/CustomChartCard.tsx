@@ -1,9 +1,11 @@
 import { UseQueryResult } from "@tanstack/react-query";
 import { LoadingSpinner, SeriesChartData } from "ui";
+import { ObjectUtil } from "utils";
 
 import { useGetContractChartData } from "../api/Contract.queries";
 import { useUserContext } from "../contexts/UserContext";
-import { ChartConfig, ChartTypeComponents } from "../types";
+import { ChartConfig, ChartTypeComponents, MetricOptions } from "../types";
+import { getChartExplanation } from "../utils";
 
 type Props = {
   config: ChartConfig;
@@ -26,13 +28,23 @@ const CustomChartCard = (props: Props) => {
         <LoadingSpinner className="text-slate-600" />
       ) : (
         <div className="relative flex h-full space-y-4">
-          <div className="text-slate-300">{config.name}</div>
+          <div className="pb-4 text-slate-300">
+            {config.name}{" "}
+            <span className="text-sm text-slate-400">
+              ({getChartExplanation(config)})
+            </span>
+          </div>
           <ChartElement
             data={{
               series: chartData.series,
               categories: chartData.categories,
             }}
-            options={{}}
+            options={{
+              seriesLabel: ObjectUtil.getLabelFromOptions(
+                MetricOptions,
+                config.metric
+              ),
+            }}
             className="absolute h-full w-full"
           />
         </div>

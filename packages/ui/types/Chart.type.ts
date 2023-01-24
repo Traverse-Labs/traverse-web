@@ -18,6 +18,7 @@ export type ChartCardData = {
     values: number[];
   }[];
   categories: string[];
+  seriesLabel: string;
 };
 
 export type ChartRef = {

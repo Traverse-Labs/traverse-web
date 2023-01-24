@@ -31,7 +31,6 @@ export const Base = () => {
   const [value, setValue] = useState<string>("TXN");
 
   const handleClick = (option: Option<string>) => {
-    console.log(option);
     setValue(option.value);
   };
 

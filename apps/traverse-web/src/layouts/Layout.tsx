@@ -34,8 +34,6 @@ const Layout = (props: Props) => {
 
   const user = useLoggedInUser(router);
 
-  console.log(user);
-
   const projectName = ObjectUtil.getLabelFromOptions(
     SupportedContractOptions,
     user.programAddress

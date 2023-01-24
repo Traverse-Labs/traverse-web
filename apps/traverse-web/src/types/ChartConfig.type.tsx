@@ -127,5 +127,6 @@ export type DashboardConfig = {
     chart_id: number;
     dashboard_id: number;
     chart_type: ChartType;
+    seriesLabel: string;
   }[];
 };

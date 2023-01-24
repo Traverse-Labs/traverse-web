@@ -26,8 +26,6 @@ const LocalStorageUtil = {
       return null;
     }
 
-    console.log(value);
-
     try {
       return JSON.parse(value) as Value;
     } catch {

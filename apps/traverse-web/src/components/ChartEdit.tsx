@@ -49,8 +49,6 @@ export const ChartEdit = (props: Props) => {
 
   const router = useRouter();
 
-  console.log(defaultConfig.name);
-
   const [chartName, setChartName] = useState(defaultConfig.name);
 
   const isNewChartPage = router.pathname === "/[userId]/chart/new";

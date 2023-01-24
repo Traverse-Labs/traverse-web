@@ -70,8 +70,6 @@ const MultiDropdownSelect = <T,>(props: Props<T>) => {
     }
   };
 
-  console.log(selectedOptions());
-
   return (
     <div className="flex w-full flex-wrap items-center gap-2">
       {selectedOptions().map((opt) => (

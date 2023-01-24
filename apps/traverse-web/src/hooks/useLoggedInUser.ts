@@ -16,10 +16,7 @@ export const useLoggedInUser = (router: NextRouter) => {
 
       userRef.current = userId;
 
-      if (userId) {
-        ApiClient.defaults.headers["x-user-id"] = userId;
-        router.push(`/${userId}`);
-      } else {
+      if (!userId) {
         router.push(`/`);
       }
     }

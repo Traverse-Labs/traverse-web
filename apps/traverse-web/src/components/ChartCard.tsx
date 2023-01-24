@@ -15,7 +15,6 @@ const ChartCard = (props: Props) => {
 
   const { programAddress } = useUserContext();
 
-  console.log(programAddress);
   const { data: chartData, isFetching } = useGetContractAutoAnalysisData(
     programAddress,
     chartId,
@@ -36,7 +35,9 @@ const ChartCard = (props: Props) => {
               series: chartData.series,
               categories: chartData.categories,
             }}
-            options={{}}
+            options={{
+              seriesLabel: chartData.seriesLabel,
+            }}
             className="absolute h-full w-full"
           />
         </div>
