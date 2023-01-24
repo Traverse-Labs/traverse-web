@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useState } from "react";
 import {
   ButtonGroup,
@@ -9,13 +10,14 @@ import { Option } from "ui/types/Option.type";
 
 import { useGetDashboardConfig } from "../../src/api/Dashboard.queries";
 import ChartCard from "../../src/components/ChartCard";
+import CustomChartCard from "../../src/components/CustomChartCard";
 import ScoreCard from "../../src/components/ScoreCard";
 import { useUserContext } from "../../src/contexts/UserContext";
 import { getPageLayout } from "../../src/layouts/Layout";
 import { ChartType, DataPeriod, DataPeriodOptions } from "../../src/types";
 
 const DashboardPage: NextPageWithLayout<DehydratedStateProps> = () => {
-  const { projectName, defaultDashboard } = useUserContext();
+  const { userId, projectName, defaultDashboard } = useUserContext();
 
   const [period, setPeriod] = useState(DataPeriod.PERIOD_60);
 
@@ -37,6 +39,8 @@ const DashboardPage: NextPageWithLayout<DehydratedStateProps> = () => {
   const chartCardConfigs = dashboardConfig.autoCharts.filter(
     (chart) => chart.chart_type !== ChartType.SCORECARD
   );
+
+  const customCharts = dashboardConfig.charts;
 
   const handlePeriodChange = (option: Option<DataPeriod>) => {
     setPeriod(option.value);
@@ -81,6 +85,28 @@ const DashboardPage: NextPageWithLayout<DehydratedStateProps> = () => {
             </div>
           );
         })}
+      </div>
+      <div className="mt-4 text-2xl font-bold">Custom Charts</div>
+      <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-2">
+        {customCharts.length === 0 ? (
+          <Link href={`/${userId}/chart`}>
+            <div className="w-full cursor-pointer rounded-lg bg-slate-800/75 p-4 text-slate-400 transition hover:ring-2 hover:ring-teal-500 hover:ring-offset-2 hover:ring-offset-slate-900">
+              + Add your custom chart to dashboard
+            </div>
+          </Link>
+        ) : (
+          customCharts.map((config) => {
+            return (
+              <div
+                key={config.id}
+                className="mb-2 h-96 rounded-lg bg-slate-800/75 p-8 pt-6"
+              >
+                <CustomChartCard config={config} />
+              </div>
+            );
+          })
+        )}
+        {}
       </div>
     </div>
   );
