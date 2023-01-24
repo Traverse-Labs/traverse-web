@@ -2,7 +2,7 @@ import ChevronLeft from "@mui/icons-material/ChevronLeft";
 import SaveOutlined from "@mui/icons-material/SaveOutlined";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import {
   Button,
   ButtonGroup,
@@ -49,6 +49,8 @@ export const ChartEdit = (props: Props) => {
 
   const router = useRouter();
 
+  console.log(defaultConfig.name);
+
   const [chartName, setChartName] = useState(defaultConfig.name);
 
   const isNewChartPage = router.pathname === "/[userId]/chart/new";
@@ -58,6 +60,10 @@ export const ChartEdit = (props: Props) => {
   const [config, setConfig] = useState<ChartConfig>(defaultConfig);
 
   const { userId, programAddress, projectName } = useUserContext();
+
+  useEffect(() => {
+    setChartName(defaultConfig.name);
+  }, [defaultConfig.name]);
 
   const handleSuccessCallback = () => {
     router.push(`/${userId}/chart`);
