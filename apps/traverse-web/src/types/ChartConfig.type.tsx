@@ -21,6 +21,7 @@ export type ChartConfig = {
   chartType: ChartType;
   aggregate?: AggregationMethod | null;
   groupBy?: GroupByMethod | null;
+  inDefaultDashboard?: boolean;
 };
 export enum AggregationMethod {
   SUM = "SUM",

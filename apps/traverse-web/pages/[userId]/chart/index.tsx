@@ -1,19 +1,23 @@
 import { TrashIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import React, { useState } from "react";
-import { Button, LoadingSpinner } from "ui";
+import { Button, LoadingSpinner, Toggle } from "ui";
 
 import {
   useDeleteChartMutation,
   useGetCharts,
 } from "../../../src/api/Chart.queries";
+import {
+  useAddChartToDashboardMutation,
+  useRemoveChartToDashboardMutation,
+} from "../../../src/api/Dashboard.queries";
 import { useUserContext } from "../../../src/contexts/UserContext";
 import { getPageLayout } from "../../../src/layouts/Layout";
 import { ChartTypeIcons } from "../../../src/types";
 import { getChartExplanation } from "../../../src/utils";
 
 const ChartPage = () => {
-  const { userId } = useUserContext();
+  const { userId, defaultDashboard } = useUserContext();
 
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
@@ -32,6 +36,14 @@ const ChartPage = () => {
 
   const { mutate: deleteChart, isLoading: isDeletingChart } =
     useDeleteChartMutation(handleDeleteSuccess);
+
+  const { mutate: addChart } = useAddChartToDashboardMutation(
+    `${defaultDashboard}`
+  );
+
+  const { mutate: removeChart } = useRemoveChartToDashboardMutation(
+    `${defaultDashboard}`
+  );
 
   const handleDeleteClick = (
     e: React.MouseEvent<SVGSVGElement>,
@@ -68,27 +80,49 @@ const ChartPage = () => {
     return null;
   };
 
+  const handleAddToDashboardToggle = (status: boolean, chartId: string) => {
+    if (status) {
+      addChart(chartId);
+    } else {
+      removeChart(chartId);
+    }
+  };
+
   const charts = (chartConfigs || []).map((config) => (
     <Link key={config.id} href={`/${userId}/chart/${config.id}`}>
-      <div className="flex cursor-pointer items-center justify-between gap-1 rounded-md bg-slate-800/75 py-4 px-6 transition hover:ring-2 hover:ring-teal-500 hover:ring-offset-2 hover:ring-offset-slate-900">
-        <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            {ChartTypeIcons[config.chartType]}
-            <div>{config.name}</div>
+      <div className="flex w-full cursor-pointer flex-col items-start justify-between gap-1 rounded-md bg-slate-800/75 py-4 px-6 transition hover:ring-2 hover:ring-teal-500 hover:ring-offset-2 hover:ring-offset-slate-900">
+        <div className="flex w-full flex-row items-center justify-between">
+          <div className="flex items-center gap-2 text-sm text-slate-500">
+            <Toggle
+              onChange={(status) =>
+                handleAddToDashboardToggle(status, config.id)
+              }
+              defaultStatus={config.inDefaultDashboard}
+            />
+            Add to dashboard
           </div>
-          <div className="text-sm italic text-slate-400">
-            {getChartExplanation(config)}
+          <div className="relative w-10">
+            {deletingId === config.id &&
+            (isDeletingChart || isFetchingCharts) ? (
+              <LoadingSpinner className="relative -right-2 w-10 flex-none text-slate-600" />
+            ) : (
+              <TrashIcon
+                className="h-10 w-10 flex-none rounded-full p-2 text-slate-600 transition hover:bg-slate-900"
+                onClick={(e) => handleDeleteClick(e, config.id)}
+              />
+            )}
           </div>
         </div>
-        <div className="relative w-10">
-          {deletingId === config.id && (isDeletingChart || isFetchingCharts) ? (
-            <LoadingSpinner className="relative -right-2 w-10 flex-none text-slate-600" />
-          ) : (
-            <TrashIcon
-              className="h-10 w-10 flex-none rounded-full p-2 text-slate-600 transition hover:bg-slate-900"
-              onClick={(e) => handleDeleteClick(e, config.id)}
-            />
-          )}
+        <div>
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              {ChartTypeIcons[config.chartType]}
+              <div>{config.name}</div>
+            </div>
+            <div className="text-sm italic text-slate-400">
+              {getChartExplanation(config)}
+            </div>
+          </div>
         </div>
       </div>
     </Link>
