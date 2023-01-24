@@ -8,7 +8,7 @@ import { Fragment, ReactElement, ReactNode, useState } from "react";
 import { LogoImg } from "ui";
 import { ObjectUtil } from "utils";
 
-import DexScanLogo from "../assets/pngs/logos/dex-scan-logo.png";
+import TraverseLogo from "../assets/pngs/logos/traverselogo.png";
 import { SupportedContractOptions } from "../constants";
 import { UserContext } from "../contexts/UserContext";
 import { useLoggedInUser } from "../hooks";
@@ -48,8 +48,8 @@ const Layout = (props: Props) => {
   const logo = (
     <div className="flex w-full items-center justify-between md:justify-start md:gap-1">
       <LogoImg
-        alt="DexScan Logo"
-        src={DexScanLogo}
+        alt="Traverse Logo"
+        src={TraverseLogo}
         size="xl"
         className="md:ml-1 md:h-9 md:w-9"
       />

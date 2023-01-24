@@ -21,7 +21,7 @@ import Head from "next/head";
 import { LayoutFn } from "ui";
 
 // TODO: update this
-const TITLE = "Traverse Analytics";
+const TITLE = "Traverse Analytics | No Code Analytics For Web3";
 const DESCRIPTION = "Easy smart contract analytics for your business decisions";
 const IMAGE_URL = "";
 const TWITTER_USERNAME = "";
