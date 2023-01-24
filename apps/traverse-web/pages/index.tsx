@@ -74,6 +74,7 @@ const Home: NextPageWithLayout<DehydratedStateProps> = () => {
             <Button
               variant="primary"
               classname="w-fit text-base background-neon"
+              isDisabled={(!email || email === "") || (!programAddress || programAddress === "")}
               onClick={handleButtonClick}
             >
               {isLoading ? <LoadingSpinner /> : <div>Get Started</div>}
