@@ -10,9 +10,20 @@ export const useLoggedInUser = (router: NextRouter) => {
   const userRef = useRef<string>();
   const [user, setUser] = useState<User>({});
 
-  if (typeof window !== "undefined") {
-    userRef.current = localStorage.getItem(USER_ID_LS_KEY) as string;
-  }
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const userId = localStorage.getItem(USER_ID_LS_KEY) as string;
+
+      userRef.current = userId;
+
+      if (userId) {
+        ApiClient.defaults.headers["x-user-id"] = userId;
+        router.push(`/${userId}`);
+      } else {
+        router.push(`/`);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const userId = userRef.current;

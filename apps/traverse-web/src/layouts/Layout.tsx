@@ -39,8 +39,6 @@ const Layout = (props: Props) => {
     user.programAddress
   );
 
-  console.log(user);
-
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const isHomePage = router.pathname === "/";
