@@ -3,4 +3,5 @@ export type User = {
   email?: string;
   programAddress?: string;
   projectName?: string;
+  defaultDashboard?: number;
 };

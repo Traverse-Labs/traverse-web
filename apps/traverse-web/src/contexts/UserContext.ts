@@ -6,6 +6,7 @@ type UserContextType = {
   programAddress: string;
   email: string;
   projectName: string;
+  defaultDashboard: number;
 };
 
 export const UserContext = createContext<UserContextType>(

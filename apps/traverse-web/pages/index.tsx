@@ -1,3 +1,4 @@
+import { ApiClient } from "api-client";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -25,6 +26,7 @@ const Home: NextPageWithLayout<DehydratedStateProps> = () => {
 
   const handleSuccessCallback = (user: User) => {
     if (user.id) {
+      ApiClient.defaults.headers["x-user-id"] = user.id;
       localStorage.setItem(USER_ID_LS_KEY, user.id);
       router.push(`/${user.id}`);
     }

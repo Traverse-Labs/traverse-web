@@ -14,6 +14,8 @@ const ChartCard = (props: Props) => {
   const { chartId, chartType, period } = props;
 
   const { programAddress } = useUserContext();
+
+  console.log(programAddress);
   const { data: chartData, isFetching } = useGetContractAutoAnalysisData(
     programAddress,
     chartId,

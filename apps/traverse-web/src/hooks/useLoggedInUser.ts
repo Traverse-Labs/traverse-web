@@ -26,13 +26,15 @@ export const useLoggedInUser = (router: NextRouter) => {
   }, []);
 
   useEffect(() => {
-    const userId = userRef.current;
+    if (typeof window !== "undefined") {
+      const userId = localStorage.getItem(USER_ID_LS_KEY) as string;
 
-    if (userId) {
-      ApiClient.defaults.headers["x-user-id"] = userId;
-      getUser(userId).then((userInfo) => {
-        setUser(userInfo);
-      });
+      if (userId) {
+        ApiClient.defaults.headers["x-user-id"] = userId;
+        getUser(userId).then((userInfo) => {
+          setUser(userInfo);
+        });
+      }
     }
   }, [router]);
 

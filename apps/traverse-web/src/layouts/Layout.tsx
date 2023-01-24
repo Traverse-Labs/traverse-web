@@ -34,6 +34,8 @@ const Layout = (props: Props) => {
 
   const user = useLoggedInUser(router);
 
+  console.log(user);
+
   const projectName = ObjectUtil.getLabelFromOptions(
     SupportedContractOptions,
     user.programAddress
@@ -191,6 +193,7 @@ const Layout = (props: Props) => {
             email: user.email,
             programAddress: user.programAddress,
             projectName,
+            defaultDashboard: user.defaultDashboard,
           }}
         >
           <main className="flex-1 overflow-auto py-8">{children}</main>

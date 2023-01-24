@@ -15,11 +15,12 @@ import { getPageLayout } from "../../src/layouts/Layout";
 import { ChartType, DataPeriod, DataPeriodOptions } from "../../src/types";
 
 const DashboardPage: NextPageWithLayout<DehydratedStateProps> = () => {
-  const { projectName } = useUserContext();
+  const { projectName, defaultDashboard } = useUserContext();
 
   const [period, setPeriod] = useState(DataPeriod.PERIOD_60);
 
-  const { data: dashboardConfig, isFetching } = useGetDashboardConfig();
+  const { data: dashboardConfig, isFetching } =
+    useGetDashboardConfig(defaultDashboard);
 
   if (isFetching || !dashboardConfig) {
     return (
